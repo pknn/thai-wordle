@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { WordToken } from '../../lib/word/types'
-import Cell from './Cell'
+import { WordToken } from '../../../lib/word/types'
+import Cell from '../Cell'
 
 interface Props {
   word: WordToken
@@ -8,8 +8,8 @@ interface Props {
 
 const Row = ({ word }: Props) => (
   <div className="flex gap-1 justify-center">
-    {word.map((characterToken) => (
-      <Cell key={characterToken.character} character={characterToken} />
+    {word.map((characterToken, i) => (
+      <Cell key={i} character={characterToken} />
     ))}
   </div>
 )

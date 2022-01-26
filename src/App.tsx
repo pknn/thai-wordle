@@ -32,34 +32,6 @@ const App = () => {
       { character: 'ค', guessState: 'New' },
       { character: 'ค', guessState: 'New' },
     ],
-    [
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-    ],
-    [
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-    ],
-    [
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-    ],
-    [
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-      { character: undefined, guessState: 'Empty' },
-    ],
   ]
 
   return (
