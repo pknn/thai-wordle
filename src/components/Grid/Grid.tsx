@@ -1,16 +1,19 @@
+import CurrentRow from './Row/CurrentRow'
 import EmptyRow from './Row/EmptyRow'
 import Row from './Row/Row'
 
 interface Props {
-  words: string[]
+  submittedWords: string[]
+  currentWord: string
 }
 
-const Grid = ({ words }: Props) => {
+const Grid = ({ submittedWords, currentWord }: Props) => {
   return (
     <div className="my-2 flex flex-col gap-1">
-      {words.map((word) => (
+      {submittedWords.map((word) => (
         <Row key={word} word={word} />
       ))}
+      <CurrentRow word={currentWord} />
       <EmptyRow />
     </div>
   )
