@@ -1,14 +1,7 @@
+import { thaiSplit } from './helper'
 import { CharacterToken } from './types'
 
-export const getGuessState = (
-  word: string,
-): [
-  CharacterToken,
-  CharacterToken,
-  CharacterToken,
-  CharacterToken,
-  CharacterToken,
-] =>
+export const getGuessState = (word: string): CharacterToken[] =>
   word === 'ไทยคม'
     ? [
         { character: 'ไ', guessState: 'Correct' },
@@ -17,10 +10,7 @@ export const getGuessState = (
         { character: 'ค', guessState: 'Absent' },
         { character: 'ม', guessState: 'Absent' },
       ]
-    : [
-        { character: 'ไ', guessState: 'Present' },
-        { character: 'ไ', guessState: 'Present' },
-        { character: 'ไ', guessState: 'Present' },
-        { character: 'ไ', guessState: 'Present' },
-        { character: 'ไ', guessState: 'Present' },
-      ]
+    : thaiSplit(word).map((character) => ({
+        character,
+        guessState: Math.random() > 0.5 ? 'Present' : 'Correct',
+      }))
