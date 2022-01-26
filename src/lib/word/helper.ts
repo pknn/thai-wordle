@@ -19,3 +19,5 @@ export const thaiStrip = (word: string) =>
     .split('')
     .filter((character) => !pattern.test(character))
     .join('')
+
+export const thaiStripSplit = (word: string) => thaiStrip(word).split('')
