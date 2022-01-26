@@ -8,11 +8,14 @@ const App = () => {
   const [submittedWord, setSubmittedWord] = useState<string[]>([])
   const [currentWord, setCurrentWord] = useState('')
   const handlePress = (character: Character) => {
-    if (thaiLength(currentWord) >= 5) return
+    if (thaiLength(currentWord + character) > 5) return
+
     setCurrentWord(currentWord + character)
   }
 
   const handleEnter = () => {
+    if (thaiLength(currentWord) < 5) return
+
     setSubmittedWord([...submittedWord, currentWord])
     setCurrentWord('')
   }
