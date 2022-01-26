@@ -33,7 +33,10 @@ const Keyboard = ({ onPress, onEnter, onDelete }: Props) => {
   const handlePress = (character: CharacterExtended) => {
     if (isExtendedCharacter(character))
       handler[character as ExtendedCharacter]()
-    else onPress(character as Character)
+    else {
+      if (isShifted) setIsShifted(!isShifted)
+      onPress(character as Character)
+    }
   }
 
   return (

@@ -8,7 +8,6 @@ interface Props {
 }
 
 const CurrentRow = ({ word }: Props) => {
-  console.log(word)
   const splitedWord = useMemo(() => thaiSplit(word), [word])
   const wordLength = useMemo(() => thaiLength(word), [word])
   return (
