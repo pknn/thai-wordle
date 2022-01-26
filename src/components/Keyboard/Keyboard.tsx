@@ -27,7 +27,7 @@ const Keyboard = ({ onPress, onEnter, onDelete }: Props) => {
   const handler: Record<ExtendedCharacter, () => void> = {
     Shift: () => setIsShifted(!isShifted),
     Enter: () => onEnter(),
-    Del: () => onDelete(),
+    Delete: () => onDelete(),
   }
 
   const handlePress = (character: CharacterExtended) => {
