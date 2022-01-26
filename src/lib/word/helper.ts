@@ -4,8 +4,8 @@ export const thaiSplit = (word: string) =>
   word
     .split('')
     .reduce(
-      (acc: string[][], cur: string) =>
-        pattern.test(cur)
+      (acc: string[][], cur: string, i: number) =>
+        pattern.test(cur) && i !== 0
           ? [...acc.slice(0, acc.length - 1), [...acc[acc.length - 1], cur]]
           : [...acc, [cur]],
       [],

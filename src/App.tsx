@@ -2,12 +2,13 @@ import { useState } from 'react'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
 import { Character } from './lib/keyboard/types'
+import { thaiLength } from './lib/word/helper'
 
 const App = () => {
   const [submittedWord, setSubmittedWord] = useState<string[]>([])
   const [currentWord, setCurrentWord] = useState('')
   const handlePress = (character: Character) => {
-    if (currentWord.length >= 5) return
+    if (thaiLength(currentWord) >= 5) return
     setCurrentWord(currentWord + character)
   }
 

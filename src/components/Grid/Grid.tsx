@@ -14,7 +14,9 @@ const Grid = ({ submittedWords, currentWord }: Props) => {
         <Row key={word} word={word} />
       ))}
       <CurrentRow word={currentWord} />
-      <EmptyRow />
+      {new Array(6 - submittedWords.length - 1).fill(0).map((_, i) => (
+        <EmptyRow key={i} />
+      ))}
     </div>
   )
 }
