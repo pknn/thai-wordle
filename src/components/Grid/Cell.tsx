@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { CharacterToken, GuessState } from '../../lib/word/types'
 
 interface Props {
-  character: CharacterToken
+  character?: CharacterToken
 }
 
 const Cell = ({ character }: Props) => {
@@ -13,12 +13,15 @@ const Cell = ({ character }: Props) => {
     New: 'text-black border-black bg-none',
   }
 
+  const getColor = (character?: CharacterToken) =>
+    character ? colorMap[character.guessState] : 'border-gray-300'
+
   const classNames = [
     'text-2xl py-3 h-14 w-14 text-center border-2 rounded',
-    colorMap[character.guessState],
+    getColor(character),
   ].join(' ')
 
-  return <span className={classNames}>{character.character}</span>
+  return <span className={classNames}>{character?.character}</span>
 }
 
 export default memo(Cell)

@@ -3,7 +3,7 @@ import { Character } from '../keyboard/types'
 export type GuessState = 'Correct' | 'Position' | 'Wrong' | 'New'
 
 export interface CharacterToken {
-  character?: Character
+  character: Character
   guessState: GuessState
 }
 
