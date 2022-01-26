@@ -1,11 +1,12 @@
-import { WordToken } from '../../../lib/word/types'
-import Row from './Row'
+import Cell from '../Cell'
+import RowContainer from './RowContainer'
 
-const emptyWordToken: WordToken = new Array(5).fill({
-  character: undefined,
-  guessState: 'Empty',
-})
-
-const EmptyRow = () => <Row word={emptyWordToken} />
+const EmptyRow = () => (
+  <RowContainer>
+    {new Array(5).fill(0).map((_, i) => (
+      <Cell key={i} />
+    ))}
+  </RowContainer>
+)
 
 export default EmptyRow

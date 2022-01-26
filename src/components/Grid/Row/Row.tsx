@@ -1,17 +1,25 @@
 import { memo } from 'react'
-import { WordToken } from '../../../lib/word/types'
+import { getGuessState } from '../../../lib/word/guess'
 import Cell from '../Cell'
+import RowContainer from './RowContainer'
 
 interface Props {
-  word: WordToken
+  word: string
 }
 
-const Row = ({ word }: Props) => (
-  <div className="flex gap-1 justify-center">
-    {word.map((characterToken, i) => (
-      <Cell key={i} character={characterToken} />
-    ))}
-  </div>
-)
+const Row = ({ word }: Props) => {
+  const wordToken = getGuessState(word)
+  return (
+    <RowContainer>
+      {wordToken.map((characterToken, i) => (
+        <Cell
+          key={i}
+          character={characterToken.character}
+          guessState={characterToken.guessState}
+        />
+      ))}
+    </RowContainer>
+  )
+}
 
 export default memo(Row)

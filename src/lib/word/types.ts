@@ -1,10 +1,6 @@
-import { Character } from '../keyboard/types'
-
-export type GuessState = 'Correct' | 'Position' | 'Wrong' | 'New' | 'Empty'
+export type GuessState = 'Correct' | 'Present' | 'Absent'
 
 export interface CharacterToken {
-  character?: Character
-  guessState: GuessState
+  character?: string
+  guessState?: GuessState
 }
-
-export type WordToken = CharacterToken[]
