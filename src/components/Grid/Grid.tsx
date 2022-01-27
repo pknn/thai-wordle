@@ -1,6 +1,6 @@
 import CurrentRow from './Row/CurrentRow'
 import EmptyRow from './Row/EmptyRow'
-import Row from './Row/Row'
+import CompleteRow from './Row/CompleteRow'
 
 interface Props {
   submittedWords: string[]
@@ -11,7 +11,7 @@ const Grid = ({ submittedWords, currentWord }: Props) => {
   return (
     <div className="my-2 flex flex-col gap-1">
       {submittedWords.map((word) => (
-        <Row key={word} word={word} />
+        <CompleteRow key={word} word={word} />
       ))}
       <CurrentRow word={currentWord} />
       {new Array(6 - submittedWords.length - 1).fill(0).map((_, i) => (

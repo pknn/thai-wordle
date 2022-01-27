@@ -1,12 +1,9 @@
-import Cell from '../Cell'
-import RowContainer from './RowContainer'
+import Row from './Row'
 
-const EmptyRow = () => (
-  <RowContainer>
-    {new Array(5).fill(0).map((_, i) => (
-      <Cell key={i} />
-    ))}
-  </RowContainer>
-)
+const EmptyRow = () => {
+  const emptyWordTokens = Array.from({ length: 5 }, () => ({}))
+
+  return <Row wordToken={emptyWordTokens} />
+}
 
 export default EmptyRow
