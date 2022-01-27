@@ -12,7 +12,7 @@ const App = () => {
   const [currentWord, setCurrentWord] = useState('')
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
-  const [shouldShowHowToPlay, setShouldShowHowToPlay] = useState(true)
+  const [shouldShowHowToPlay, setShouldShowHowToPlay] = useState(false)
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
@@ -21,7 +21,7 @@ const App = () => {
   }
 
   const handleEnter = () => {
-    if (!isInWordList(currentWord)) {
+    if (false) {
       setShouldShowAlert(true)
       return
     }
