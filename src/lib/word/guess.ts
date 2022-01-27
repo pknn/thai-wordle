@@ -33,7 +33,11 @@ export const getGuessState = (word: string): CharacterToken[] => {
     const index = result.findIndex(
       (token) => !token.guessState && token.character === character,
     )
-    if (index !== -1) result[index].guessState = 'Present'
+    if (index !== -1)
+      result[index] = {
+        character: solutionSplitted[index],
+        guessState: 'Present',
+      }
   })
 
   return result.map((v) => (v.guessState ? v : { ...v, guessState: 'Absent' }))
