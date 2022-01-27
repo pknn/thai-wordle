@@ -1,9 +1,10 @@
-import { thaiStripSplit } from './helper'
+import { thaiSplit, thaiStripSplit } from './helper'
 import { CharacterToken } from './types'
 import { getSolution } from './words'
 
 export const getGuessState = (word: string): CharacterToken[] => {
   const solution = getSolution()
+  const solutionSplitted = thaiSplit(solution)
   const solutionSplitStripped = thaiStripSplit(solution)
   const guessWordSplitStripped = thaiStripSplit(word)
 
@@ -12,7 +13,11 @@ export const getGuessState = (word: string): CharacterToken[] => {
   }))
 
   guessWordSplitStripped.forEach((character, i) => {
-    if (solutionSplitStripped[i] === character) result[i].guessState = 'Correct'
+    if (solutionSplitStripped[i] === character)
+      result[i] = {
+        character: solutionSplitted[i],
+        guessState: 'Correct',
+      }
   })
 
   guessWordSplitStripped.forEach((character, i) => {
