@@ -4,7 +4,7 @@ import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
 import { Character } from './lib/keyboard/types'
 import { thaiLength } from './lib/word/helper'
-import { getSolution } from './lib/word/words'
+import { getSolution, isInWordList } from './lib/word/words'
 
 const App = () => {
   const [submittedWord, setSubmittedWord] = useState<string[]>([])
@@ -19,7 +19,10 @@ const App = () => {
   }
 
   const handleEnter = () => {
-    if (thaiLength(currentWord) < 5) return
+    if (!isInWordList(currentWord)) {
+      setShouldShowAlert(true)
+      return
+    }
 
     setSubmittedWord([...submittedWord, currentWord])
     setCurrentWord('')

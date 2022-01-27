@@ -22,7 +22,7 @@ const Alert = ({ shouldShow, onHide }: Props) => {
   const getClassName = useCallback(
     () =>
       [
-        'absolute w-full py-4 text-center bg-red-200 rounded shadow transition delay-150 duration-1000',
+        'absolute w-full py-4 text-center bg-red-200 rounded shadow transition delay-150 duration-700 ease-in',
         shouldShow ? 'opacity-1' : 'opacity-0',
       ].join(' '),
     [shouldShow],
