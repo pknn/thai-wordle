@@ -2,7 +2,7 @@ import { thaiSplit, thaiStripSplit } from './helper'
 import { CharacterToken } from './types'
 import { getSolution } from './words'
 
-const solution = getSolution()
+export const solution = getSolution()
 
 export const isSolution = (word: string) => word === solution
 

@@ -3,6 +3,8 @@ import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
 import Modal from './components/Modal'
+import HowToPlay from './components/Modal/HowToPlay'
+import Summary from './components/Modal/Summary'
 import { ModalName, ModalState } from './components/Modal/types'
 import { Character } from './lib/keyboard/types'
 import { isSolution } from './lib/word/guess'
@@ -15,13 +17,19 @@ const App = () => {
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
   const [modalState, setModalState] = useState<ModalState>({
+    modal: 'Summary',
     shouldShow: true,
-    modal: 'HowToPlay',
   })
 
   useEffect(() => {
-    if (isSolution(submittedWord[submittedWord.length - 1])) {
-      console.log('Yay')
+    if (
+      isSolution(submittedWord[submittedWord.length - 1]) ||
+      submittedWord.length >= 5
+    ) {
+      setModalState({
+        modal: 'Summary',
+        shouldShow: true,
+      })
     }
   }, [submittedWord])
 
@@ -80,7 +88,19 @@ const App = () => {
           onDelete={handleDelete}
         />
       </div>
-      <Modal modalState={modalState} onHide={handleHideModal} />
+      {modalState.modal === 'HowToPlay' ? (
+        <HowToPlay
+          shouldShow={modalState.shouldShow}
+          onHide={handleHideModal}
+        />
+      ) : (
+        <Summary
+          shouldShow={modalState.shouldShow}
+          onHide={handleHideModal}
+          submittedWord={submittedWord}
+          histogram={[1, 2, 4, 1, 2, 3]}
+        />
+      )}
     </div>
   )
 }
