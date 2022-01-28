@@ -1,26 +1,26 @@
 import { useMemo } from 'react'
-import { thaiLength, thaiSplit } from '../../../lib/word/helper'
-import Cell from '../Cell'
-import RowContainer from './RowContainer'
+import { thaiSplit } from '../../../lib/word/helper'
+import Row from './Row'
 
 interface Props {
   word: string
 }
 
 const CurrentRow = ({ word }: Props) => {
-  const splitedWord = useMemo(() => thaiSplit(word), [word])
-  const wordLength = useMemo(() => thaiLength(word), [word])
-  return (
-    <RowContainer>
-      {splitedWord
-        .map((character, i) => (
-          <Cell key={`${i}${character}`} character={character} />
-        ))
-        .concat(
-          new Array(5 - wordLength).fill(0).map((_, i) => <Cell key={i} />),
-        )}
-    </RowContainer>
+  const characterTokens = useMemo(
+    () =>
+      thaiSplit(word).map((character) => ({
+        character,
+        guessState: undefined,
+      })),
+    [word],
   )
+  const paddedWord = useMemo(
+    () => Array.from({ ...characterTokens, length: 5 }, (v) => v ?? {}),
+    [word],
+  )
+
+  return <Row wordToken={paddedWord} />
 }
 
 export default CurrentRow

@@ -1,4 +1,4 @@
-const pattern = /[ิีึืุู่้๊๋์ั]/
+const pattern = /[[ิีึืุู่้๊๋์ั็]/
 
 export const thaiSplit = (word: string) =>
   word

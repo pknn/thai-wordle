@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { GuessState } from '../../lib/word/types'
 
 interface Props {
@@ -22,6 +22,7 @@ const Cell = ({ character, guessState }: Props) => {
   const classNames = [
     'text-2xl py-3 h-14 w-14 text-center border-2 rounded',
     color,
+    !!character ? 'animate-cell-in' : '',
   ].join(' ')
 
   return <span className={classNames}>{character}</span>

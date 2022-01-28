@@ -11,5 +11,5 @@ export const getSolution = (): string => {
   const msInDay = 86400000
   const index = Math.floor((now - epochMs) / msInDay)
 
-  return Words[index]
+  return Words[index + 1]
 }
