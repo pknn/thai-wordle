@@ -1,9 +1,10 @@
 import { solution } from '../../../lib/word/guess'
 import ModalContainer, { ContainerProps } from '../ModalContainer'
 import HistogramChart from './HistogramChart/HistogramChart'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { GameStatistics } from '../../../lib/stats/types'
 import { GameStatus } from '../../../lib/status'
+import StatisticWindow from './StatisticWindow'
 
 interface DataProps {
   status: GameStatus
@@ -18,7 +19,7 @@ const Summary = ({
   onHide,
   status,
   wonAt,
-  gameStatistics: gameStatictics,
+  gameStatistics,
 }: Props) => {
   const resultText =
     status === 'won' ? (
@@ -41,8 +42,28 @@ const Summary = ({
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
       {resultText}
       <div className="my-4">
-        <h2>สถิติ</h2>
-        <HistogramChart histogram={gameStatictics.histogram} />
+        <div className="px-4 flex justify-between my-4">
+          <StatisticWindow
+            description="การเล่น"
+            factor={gameStatistics.totalGames}
+          />
+          <StatisticWindow
+            description="ร้อยละ"
+            factor={gameStatistics.successRate}
+          />
+          <StatisticWindow
+            description="ชนะต่อ"
+            factor={gameStatistics.currentStreak}
+          />
+          <StatisticWindow
+            description="ชนะต่อมาก"
+            factor={gameStatistics.bestStreak}
+          />
+        </div>
+        <div>
+          <h2>สถิติ</h2>
+          <HistogramChart histogram={gameStatistics.histogram} />
+        </div>
       </div>
     </ModalContainer>
   )
