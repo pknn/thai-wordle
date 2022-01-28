@@ -19,14 +19,10 @@ import {
 import { GameStatus } from './lib/status'
 
 const App = () => {
-  const [wonAt, setWonAt] = useState(0)
-  const [hasWon, setHasWon] = useState(false)
+  const [lastIndex, setLastIndex] = useState(0)
   const [status, setStatus] = useState<GameStatus>('play')
-  const [submittedWords, setSubmittedWords] = useState<string[]>(() => {
-    const maybeGameState = loadGameStateFromLocalStorage()
-    if (!maybeGameState || maybeGameState.solution !== solution) return []
-    return maybeGameState.submittedWords
-  })
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [submittedWords, setSubmittedWords] = useState<string[]>([])
   const [currentWord, setCurrentWord] = useState('')
   const [gameStatistics, setGameStatistics] = useState(getGameStatistics())
 
@@ -39,31 +35,36 @@ const App = () => {
   const [isGodMode, setIsGodMode] = useState(false)
 
   useEffect(() => {
-    const lastSubmittedWord = submittedWords[submittedWords.length - 1]
-    if (status === 'play') {
-      if (isSolution(lastSubmittedWord)) {
-        setStatus('won')
-      } else if (submittedWords.length >= 6) {
-        setStatus('lost')
-      }
+    const maybeGameState = loadGameStateFromLocalStorage()
+    if (!maybeGameState || maybeGameState.solution !== solution) {
+      setSubmittedWords([])
+    } else {
+      setSubmittedWords(maybeGameState.submittedWords)
+      setIsLoaded(true)
     }
-    if (
-      (!hasWon && isSolution(lastSubmittedWord)) ||
-      submittedWords.length >= 6
-    ) {
-      setWonAt(submittedWords.length - 1)
-      setHasWon(true)
-      setModalState({
-        modal: 'Summary',
-        shouldShow: true,
-      })
+  }, [])
+
+  useEffect(() => {
+    const lastSubmittedWord = submittedWords[submittedWords.length - 1]
+    if (status !== 'play') return
+    if (isSolution(lastSubmittedWord)) {
+      setStatus('won')
+    } else if (submittedWords.length >= 6) {
+      setStatus('lost')
     }
     saveGameStateToLocalStorage({ submittedWords, solution })
   }, [submittedWords])
 
   useEffect(() => {
     if (status === 'play') return
-    setGameStatistics(getFinishedGameStatistics(status, wonAt))
+    setGameStatistics(
+      getFinishedGameStatistics(status, submittedWords.length - 1, !isLoaded),
+    )
+    setLastIndex(submittedWords.length - 1)
+    setModalState({
+      modal: 'Summary',
+      shouldShow: true,
+    })
   }, [status])
 
   const handlePress = (character: Character) => {
@@ -122,7 +123,7 @@ const App = () => {
           onDelete={handleDelete}
         />
       </div>
-      {modalState.modal === 'HowToPlay' ? (
+      {modalState.modal === 'HowToPlay' && status === 'play' ? (
         <HowToPlay
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
@@ -131,8 +132,8 @@ const App = () => {
         <Summary
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
-          hasWon={hasWon}
-          wonAt={wonAt}
+          status={status}
+          wonAt={lastIndex}
           gameStatistics={gameStatistics}
         />
       )}
