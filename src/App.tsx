@@ -8,9 +8,17 @@ import { Character } from './lib/keyboard/types'
 import { isSolution, solution } from './lib/word/guess'
 import { thaiLength } from './lib/word/helper'
 import { isInWordList } from './lib/word/words'
+import {
+  loadGameStateFromLocalStorage,
+  saveGameStateToLocalStorage,
+} from './lib/storage'
 
 const App = () => {
-  const [submittedWord, setSubmittedWord] = useState<string[]>([])
+  const [submittedWords, setSubmittedWords] = useState<string[]>(() => {
+    const maybeGameState = loadGameStateFromLocalStorage()
+    if (!maybeGameState || maybeGameState.solution !== solution) return []
+    return maybeGameState.submittedWords
+  })
   const [currentWord, setCurrentWord] = useState('')
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
@@ -22,14 +30,15 @@ const App = () => {
   const [isGodMode, setIsGodMode] = useState(false)
 
   useEffect(() => {
-    const lastSubmittedWord = submittedWord[submittedWord.length - 1]
-    if (isSolution(lastSubmittedWord) || submittedWord.length >= 5) {
+    const lastSubmittedWord = submittedWords[submittedWords.length - 1]
+    if (isSolution(lastSubmittedWord) || submittedWords.length >= 6) {
       setModalState({
         modal: 'Summary',
         shouldShow: true,
       })
     }
-  }, [submittedWord])
+    saveGameStateToLocalStorage({ submittedWords, solution })
+  }, [submittedWords])
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
@@ -41,7 +50,7 @@ const App = () => {
     if (currentWord === 'รักเดฟ') {
       setIsGodMode(true)
     } else if (isInWordList(currentWord)) {
-      setSubmittedWord([...submittedWord, currentWord])
+      setSubmittedWords([...submittedWords, currentWord])
     } else {
       setShouldShowAlert(true)
     }
@@ -79,7 +88,7 @@ const App = () => {
             shouldShow={shouldShowAlert}
             onHide={() => setShouldShowAlert(false)}
           />
-          <Grid submittedWords={submittedWord} currentWord={currentWord} />
+          <Grid submittedWords={submittedWords} currentWord={currentWord} />
         </div>
         <Keyboard
           onPress={handlePress}
@@ -96,8 +105,7 @@ const App = () => {
         <Summary
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
-          submittedWord={submittedWord}
-          histogram={[1, 2, 4, 1, 2, 3]}
+          submittedWords={submittedWords}
         />
       )}
       <div className="flex absolute bottom-4 px-4 flex-row md:flex-col">

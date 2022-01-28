@@ -10,8 +10,8 @@ interface Props {
 const Grid = ({ submittedWords, currentWord }: Props) => {
   return (
     <div className="my-2 flex flex-col gap-1">
-      {submittedWords.map((word) => (
-        <CompleteRow key={word} word={word} />
+      {submittedWords.map((word, i) => (
+        <CompleteRow key={i + word} word={word} />
       ))}
       <CurrentRow word={currentWord} />
       {new Array(6 - submittedWords.length - 1).fill(0).map((_, i) => (

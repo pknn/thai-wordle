@@ -12,7 +12,7 @@ const Row = ({ chartModel, index }: Props) => (
       className="flex bg-green-400 text-xs justify-end items-center pr-2"
       style={{ width: `${chartModel.percent}%` }}
     >
-      {chartModel.raw}
+      {chartModel.raw > 0 && chartModel.raw}
     </div>
   </div>
 )
