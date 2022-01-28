@@ -2,8 +2,11 @@ import { thaiSplit, thaiStripSplit } from './helper'
 import { CharacterToken } from './types'
 import { getSolution } from './words'
 
+const solution = getSolution()
+
+export const isSolution = (word: string) => word === solution
+
 export const getGuessState = (word: string): CharacterToken[] => {
-  const solution = getSolution()
   const solutionSplitted = thaiSplit(solution)
   const solutionSplitStripped = thaiStripSplit(solution)
   const guessWordSplitted = thaiSplit(word)

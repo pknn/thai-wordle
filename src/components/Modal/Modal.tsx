@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import HowToPlay from './HowToPlay'
 import Summary from './Summary'
 import { ModalState } from './types'
@@ -20,4 +21,4 @@ const Modal = <T,>(props: Props<T>) => {
   )
 }
 
-export default Modal
+export default memo(Modal)

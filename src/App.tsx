@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
 import Modal from './components/Modal'
 import { ModalName, ModalState } from './components/Modal/types'
 import { Character } from './lib/keyboard/types'
+import { isSolution } from './lib/word/guess'
 import { thaiLength } from './lib/word/helper'
 import { getSolution, isInWordList } from './lib/word/words'
 
@@ -17,6 +18,12 @@ const App = () => {
     shouldShow: true,
     modal: 'HowToPlay',
   })
+
+  useEffect(() => {
+    if (isSolution(submittedWord[submittedWord.length - 1])) {
+      console.log('Yay')
+    }
+  }, [submittedWord])
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
