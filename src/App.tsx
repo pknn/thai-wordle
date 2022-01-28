@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
-import Modal from './components/Modal'
-import HowToPlay from './components/Modal/HowToPlay'
-import Summary from './components/Modal/Summary'
+import { HowToPlay, Summary } from './components/Modal'
 import { ModalName, ModalState } from './components/Modal/types'
 import { Character } from './lib/keyboard/types'
-import { isSolution } from './lib/word/guess'
+import { isSolution, solution } from './lib/word/guess'
 import { thaiLength } from './lib/word/helper'
-import { getSolution, isInWordList } from './lib/word/words'
+import { isInWordList } from './lib/word/words'
 
 const App = () => {
   const [submittedWord, setSubmittedWord] = useState<string[]>([])
@@ -17,15 +15,15 @@ const App = () => {
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
   const [modalState, setModalState] = useState<ModalState>({
-    modal: 'Summary',
+    modal: 'HowToPlay',
     shouldShow: true,
   })
 
+  const [isGodMode, setIsGodMode] = useState(false)
+
   useEffect(() => {
-    if (
-      isSolution(submittedWord[submittedWord.length - 1]) ||
-      submittedWord.length >= 5
-    ) {
+    const lastSubmittedWord = submittedWord[submittedWord.length - 1]
+    if (isSolution(lastSubmittedWord) || submittedWord.length >= 5) {
       setModalState({
         modal: 'Summary',
         shouldShow: true,
@@ -40,12 +38,13 @@ const App = () => {
   }
 
   const handleEnter = () => {
-    if (!isInWordList(currentWord)) {
+    if (currentWord === 'รักเดฟ') {
+      setIsGodMode(true)
+    } else if (isInWordList(currentWord)) {
+      setSubmittedWord([...submittedWord, currentWord])
+    } else {
       setShouldShowAlert(true)
-      return
     }
-
-    setSubmittedWord([...submittedWord, currentWord])
     setCurrentWord('')
   }
 
@@ -68,13 +67,13 @@ const App = () => {
   }
 
   return (
-    <div className="w-full h-full">
-      <div className="md:container p-4 md:px-4 md:max-w-3xl">
+    <div className="w-full h-screen">
+      <div className="md:container px-4 py-8 md:px-4 md:max-w-3xl">
         <div className="px-4 flex justify-between">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>
           <button onClick={() => handleShowModal('HowToPlay')}>?</button>
         </div>
-        <div>คำวันนี้: {getSolution()}</div>
+        {isGodMode && <div className="px-4">คำวันนี้: {solution}</div>}
         <div className="relative">
           <Alert
             shouldShow={shouldShowAlert}
@@ -101,6 +100,17 @@ const App = () => {
           histogram={[1, 2, 4, 1, 2, 3]}
         />
       )}
+      <div className="flex absolute bottom-4 px-4 flex-row md:flex-col">
+        <div className="text-xs">
+          Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
+          <a
+            className="underline text-blue-400"
+            href="https://thwordle.vercel.app/"
+          >
+            thwordle
+          </a>{' '}
+        </div>
+      </div>
     </div>
   )
 }

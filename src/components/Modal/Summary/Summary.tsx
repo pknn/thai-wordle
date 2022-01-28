@@ -15,7 +15,7 @@ const Summary = ({ shouldShow, onHide, submittedWord, histogram }: Props) => {
   const resultText = hasWon ? (
     <div>
       <h1>
-        <span className="text-green-500">ชนะ</span>ด้วยการทาย{' '}
+        คุณ <span className="text-green-500">ชนะ</span> ด้วยการทาย{' '}
         {submittedWord.length} ครั้ง
       </h1>
     </div>

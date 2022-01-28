@@ -1,1 +1,2 @@
-export { default } from './Modal'
+export { default as HowToPlay } from './HowToPlay'
+export { default as Summary } from './Summary'
