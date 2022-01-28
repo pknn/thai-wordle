@@ -12,7 +12,7 @@ const App = () => {
   const [currentWord, setCurrentWord] = useState('')
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
-  const [shouldShowHowToPlay, setShouldShowHowToPlay] = useState(false)
+  const [shouldShowHowToPlay, setShouldShowHowToPlay] = useState(true)
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
@@ -34,10 +34,21 @@ const App = () => {
     setCurrentWord(currentWord.slice(0, currentWord.length - 1))
   }
 
+  const handleShowHowToPlay = () => {
+    setShouldShowHowToPlay(true)
+  }
+
+  const handleHideHowToPlay = () => {
+    setShouldShowHowToPlay(false)
+  }
+
   return (
     <div className="w-full h-full">
       <div className="md:container p-4 md:px-4 md:max-w-3xl">
-        <div className="px-4 text-xl">ไทยเวิร์ดเดิล</div>
+        <div className="px-4 flex justify-between">
+          <div className="text-xl">ไทยเวิร์ดเดิล</div>
+          <button onClick={handleShowHowToPlay}>?</button>
+        </div>
         <div>คำวันนี้: {getSolution()}</div>
         <div className="relative">
           <Alert
@@ -54,7 +65,7 @@ const App = () => {
       </div>
       <HowToPlay
         shouldShow={shouldShowHowToPlay}
-        onHide={() => setShouldShowHowToPlay(false)}
+        onHide={handleHideHowToPlay}
       />
     </div>
   )
