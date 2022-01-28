@@ -2,7 +2,8 @@ import { useState } from 'react'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
-import { HowToPlay } from './components/Modal'
+import Modal from './components/Modal'
+import { ModalName, ModalState } from './components/Modal/types'
 import { Character } from './lib/keyboard/types'
 import { thaiLength } from './lib/word/helper'
 import { getSolution, isInWordList } from './lib/word/words'
@@ -12,7 +13,10 @@ const App = () => {
   const [currentWord, setCurrentWord] = useState('')
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
-  const [shouldShowHowToPlay, setShouldShowHowToPlay] = useState(true)
+  const [modalState, setModalState] = useState<ModalState>({
+    shouldShow: true,
+    modal: 'HowToPlay',
+  })
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
@@ -34,12 +38,18 @@ const App = () => {
     setCurrentWord(currentWord.slice(0, currentWord.length - 1))
   }
 
-  const handleShowHowToPlay = () => {
-    setShouldShowHowToPlay(true)
+  const handleShowModal = (modalName: ModalName) => {
+    setModalState({
+      modal: modalName,
+      shouldShow: true,
+    })
   }
 
-  const handleHideHowToPlay = () => {
-    setShouldShowHowToPlay(false)
+  const handleHideModal = () => {
+    setModalState({
+      ...modalState,
+      shouldShow: false,
+    })
   }
 
   return (
@@ -47,7 +57,7 @@ const App = () => {
       <div className="md:container p-4 md:px-4 md:max-w-3xl">
         <div className="px-4 flex justify-between">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>
-          <button onClick={handleShowHowToPlay}>?</button>
+          <button onClick={() => handleShowModal('HowToPlay')}>?</button>
         </div>
         <div>คำวันนี้: {getSolution()}</div>
         <div className="relative">
@@ -63,10 +73,7 @@ const App = () => {
           onDelete={handleDelete}
         />
       </div>
-      <HowToPlay
-        shouldShow={shouldShowHowToPlay}
-        onHide={handleHideHowToPlay}
-      />
+      <Modal modalState={modalState} onHide={handleHideModal} />
     </div>
   )
 }

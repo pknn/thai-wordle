@@ -1,1 +1,1 @@
-export { default as HowToPlay } from './HowToPlay'
+export { default } from './Modal'
