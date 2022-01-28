@@ -1,4 +1,4 @@
-import { Histogram } from './stats/types'
+import { GameStatistics } from './stats/types'
 
 const gameStateKey = 'gameState'
 
@@ -20,15 +20,6 @@ export const loadGameStateFromLocalStorage = (): GameState | null =>
   tryParse<GameState>(gameStateKey)
 
 const gameStatisticsKey = 'gameStatistics'
-
-export interface GameStatistics {
-  histogram: Histogram
-  gamesFailed: number
-  currentStreak: number
-  bestStreak: number
-  totalGames: number
-  successRate: number
-}
 
 export const saveStatisticsToLocalStorage = (
   gameStatistics: GameStatistics,

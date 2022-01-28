@@ -12,14 +12,23 @@ import {
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
 } from './lib/storage'
+import {
+  getFinishedGameStatistics,
+  getGameStatistics,
+} from './lib/stats/helper'
+import { GameStatus } from './lib/status'
 
 const App = () => {
+  const [wonAt, setWonAt] = useState(0)
+  const [hasWon, setHasWon] = useState(false)
+  const [status, setStatus] = useState<GameStatus>('play')
   const [submittedWords, setSubmittedWords] = useState<string[]>(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
     if (!maybeGameState || maybeGameState.solution !== solution) return []
     return maybeGameState.submittedWords
   })
   const [currentWord, setCurrentWord] = useState('')
+  const [gameStatistics, setGameStatistics] = useState(getGameStatistics())
 
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
   const [modalState, setModalState] = useState<ModalState>({
@@ -31,7 +40,19 @@ const App = () => {
 
   useEffect(() => {
     const lastSubmittedWord = submittedWords[submittedWords.length - 1]
-    if (isSolution(lastSubmittedWord) || submittedWords.length >= 6) {
+    if (status === 'play') {
+      if (isSolution(lastSubmittedWord)) {
+        setStatus('won')
+      } else if (submittedWords.length >= 6) {
+        setStatus('lost')
+      }
+    }
+    if (
+      (!hasWon && isSolution(lastSubmittedWord)) ||
+      submittedWords.length >= 6
+    ) {
+      setWonAt(submittedWords.length - 1)
+      setHasWon(true)
       setModalState({
         modal: 'Summary',
         shouldShow: true,
@@ -39,6 +60,11 @@ const App = () => {
     }
     saveGameStateToLocalStorage({ submittedWords, solution })
   }, [submittedWords])
+
+  useEffect(() => {
+    if (status === 'play') return
+    setGameStatistics(getFinishedGameStatistics(status, wonAt))
+  }, [status])
 
   const handlePress = (character: Character) => {
     if (thaiLength(currentWord + character) > 5) return
@@ -105,7 +131,9 @@ const App = () => {
         <Summary
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
-          submittedWords={submittedWords}
+          hasWon={hasWon}
+          wonAt={wonAt}
+          gameStatistics={gameStatistics}
         />
       )}
       <div className="flex absolute bottom-4 px-4 flex-row md:flex-col">
