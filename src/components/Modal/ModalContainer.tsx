@@ -23,7 +23,7 @@ const ModalContainer = ({
       onClick={() => onHide()}
     >
       <div className="w-full h-full flex justify-center items-center">
-        <div className="m-2 px-4 py-8 w-4/5 max-w-lg bg-white rounded-md shadow-md text-center relative">
+        <div className="max-h-[80%] m-2 px-4 py-8 w-4/5 max-w-lg bg-white rounded-md shadow-md text-center relative overflow-y-scroll">
           <button className="absolute top-2 right-4" onClick={() => onHide()}>
             x
           </button>

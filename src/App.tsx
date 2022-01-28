@@ -29,7 +29,7 @@ const App = () => {
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
   const [modalState, setModalState] = useState<ModalState>({
     modal: 'HowToPlay',
-    shouldShow: true,
+    shouldShow: false,
   })
 
   const [isGodMode, setIsGodMode] = useState(false)
@@ -123,7 +123,7 @@ const App = () => {
           onDelete={handleDelete}
         />
       </div>
-      {modalState.modal === 'HowToPlay' && status === 'play' ? (
+      {modalState.modal === 'HowToPlay' ? (
         <HowToPlay
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
@@ -137,7 +137,7 @@ const App = () => {
           gameStatistics={gameStatistics}
         />
       )}
-      <div className="flex absolute bottom-4 px-4 flex-row md:flex-col">
+      <div className="flex bottom-0 px-4 flex-row md:flex-col">
         <div className="text-xs">
           Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
           <a
