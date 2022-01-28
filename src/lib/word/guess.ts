@@ -6,6 +6,7 @@ export const getGuessState = (word: string): CharacterToken[] => {
   const solution = getSolution()
   const solutionSplitted = thaiSplit(solution)
   const solutionSplitStripped = thaiStripSplit(solution)
+  const guessWordSplitted = thaiSplit(word)
   const guessWordSplitStripped = thaiStripSplit(word)
 
   const result: CharacterToken[] = guessWordSplitStripped.map((character) => ({
@@ -22,20 +23,26 @@ export const getGuessState = (word: string): CharacterToken[] => {
 
   guessWordSplitStripped.forEach((character, i) => {
     if (!result[i].guessState && !solutionSplitStripped.includes(character))
-      result[i].guessState = 'Absent'
+      result[i] = {
+        character: guessWordSplitted[i],
+        guessState: 'Absent',
+      }
   })
 
-  const remainingCharacterInSolution = solutionSplitStripped.filter(
+  const remainingCharacterInSolutionStripped = solutionSplitStripped.filter(
+    (_, i) => result[i].guessState !== 'Correct',
+  )
+  const remainingCharacterInSolution = solutionSplitted.filter(
     (_, i) => result[i].guessState !== 'Correct',
   )
 
-  remainingCharacterInSolution.forEach((character) => {
+  remainingCharacterInSolutionStripped.forEach((character, i) => {
     const index = result.findIndex(
       (token) => !token.guessState && token.character === character,
     )
     if (index !== -1)
       result[index] = {
-        character: solutionSplitted[index],
+        character: remainingCharacterInSolution[i],
         guessState: 'Present',
       }
   })
