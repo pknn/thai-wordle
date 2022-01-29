@@ -1,3 +1,4 @@
+import { ArrowCircleDownIcon } from '@heroicons/react/solid'
 import { thaiSplit } from '../../../lib/word/helper'
 import { CharacterToken } from '../../../lib/word/types'
 import { Row } from '../../Grid'
@@ -60,7 +61,9 @@ const HowToPlay = ({ shouldShow, onHide }: ContainerProps) => {
         </p>
         <ExampleContainer>
           <Row wordToken={noVowelCorrectExample} />
-          <p>จะกลายเป็น</p>
+          <div className="flex justify-center">
+            <ArrowCircleDownIcon className="h-5 w-5 text-gray-500" />
+          </div>
           <Row wordToken={withVowelCorrectExample} />
           <p>
             มีตัวอักษร ด อยู่ในคำ และอยู่ในตำแหน่งที่ถูกต้อง จะทำการเพิ่ม ไม้โท
