@@ -36,6 +36,7 @@ const App = () => {
 
   useEffect(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
+    console.log(maybeGameState, maybeGameState?.solution === solution)
     if (!maybeGameState || maybeGameState.solution !== solution) {
       setSubmittedWords([])
       setModalState({
@@ -50,7 +51,7 @@ const App = () => {
 
   useEffect(() => {
     const lastSubmittedWord = submittedWords[submittedWords.length - 1]
-    if (status !== 'play') return
+    if (status !== 'play' || !lastSubmittedWord) return
     if (isSolution(lastSubmittedWord)) {
       setStatus('won')
     } else if (submittedWords.length >= 6) {

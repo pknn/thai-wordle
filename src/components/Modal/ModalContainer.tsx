@@ -23,7 +23,7 @@ const ModalContainer = ({
       onClick={() => onHide()}
     >
       <div className="flex p-4 justify-center items-center overscroll-contain">
-        <div className="rounded-md shadow-md text-center bg-white overscroll-contain">
+        <div className="rounded-md shadow-md text-center bg-white">
           <div className="px-4 py-8">{children}</div>
         </div>
       </div>
