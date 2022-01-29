@@ -40,7 +40,7 @@ const Summary = ({
 
   return (
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
-      {resultText}
+      <h2>สถิติ</h2>
       <div className="my-4">
         <div className="px-4 flex justify-between my-4">
           <StatisticWindow
@@ -61,7 +61,6 @@ const Summary = ({
           />
         </div>
         <div>
-          <h2>สถิติ</h2>
           <HistogramChart histogram={gameStatistics.histogram} />
         </div>
       </div>
