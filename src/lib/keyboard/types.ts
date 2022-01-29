@@ -73,11 +73,22 @@ export type CharacterExtended = Character | ExtendedCharacter | ' '
 
 export type TypableCharacter = Character | ExtendedCharacter
 
-export type KeyRow = CharacterExtended[]
+export type BaseKeyRow = CharacterExtended[]
+
+export type BaseKeySet = BaseKeyRow[]
+
+export interface BaseKeyboardLayout {
+  nonShifted: BaseKeySet
+  shifted: BaseKeySet
+}
+
+export type KeyStatus = 'Correct' | 'Present' | 'Absent' | 'Unused'
+
+export interface CharacterExtendedWithStatus {
+  character: CharacterExtended
+  status: KeyStatus
+}
+
+export type KeyRow = CharacterExtendedWithStatus[]
 
 export type KeySet = KeyRow[]
-
-export interface KeyboardLayout {
-  nonShifted: KeySet
-  shifted: KeySet
-}

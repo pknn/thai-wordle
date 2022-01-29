@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { isExtendedCharacter } from '../../lib/keyboard/helper'
+import { getKeyStatuses, isExtendedCharacter } from '../../lib/keyboard/helper'
 import { keys } from '../../lib/keyboard/keyboard'
 import {
   Character,
@@ -8,20 +8,32 @@ import {
 } from '../../lib/keyboard/types'
 import KeySet from './KeySet'
 
+interface DataProps {
+  submittedWords: string[]
+}
+
 interface ActionProps {
   onPress: (character: Character) => void
   onEnter: () => void
   onDelete: () => void
 }
 
-type Props = ActionProps
+type Props = DataProps & ActionProps
 
-const Keyboard = ({ onPress, onEnter, onDelete }: Props) => {
+const Keyboard = ({ submittedWords, onPress, onEnter, onDelete }: Props) => {
   const [isShifted, setIsShifted] = useState(false)
 
-  const keySet = useMemo(
+  const baseKeySet = useMemo(
     () => keys[isShifted ? 'shifted' : 'nonShifted'],
     [isShifted],
+  )
+
+  const keySet = useMemo(
+    () =>
+      baseKeySet.map((keyRow) =>
+        keyRow.map((character) => getKeyStatuses(submittedWords, character)),
+      ),
+    [submittedWords, baseKeySet],
   )
 
   const handler: Record<ExtendedCharacter, () => void> = {

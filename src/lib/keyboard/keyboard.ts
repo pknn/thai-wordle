@@ -1,6 +1,6 @@
-import { KeyboardLayout } from './types'
+import { BaseKeyboardLayout } from './types'
 
-export const keys: KeyboardLayout = {
+export const keys: BaseKeyboardLayout = {
   nonShifted: [
     [' ', ' ', ' ', 'ภ', 'ถ', 'ุ', 'ึ', 'ค', 'ต', 'จ', 'ข', 'ช'],
     [' ', 'ไ', 'ำ', 'พ', 'ะ', 'ั', 'ี', 'ร', 'น', 'ย', 'บ', 'ล', 'ฃ'],
