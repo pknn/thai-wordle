@@ -19,15 +19,12 @@ const ModalContainer = ({
 }: ContainerProps & ChildrenProps) =>
   shouldShow ? (
     <div
-      className="absolute inset-0 m-auto bg-gray-500 bg-opacity-70 z-50"
+      className="fixed inset-0 bg-gray-500 bg-opacity-70 z-50 overflow-y-scroll overscroll-y-contain min-h-screen"
       onClick={() => onHide()}
     >
-      <div className="w-full h-full flex justify-center items-center">
-        <div className="max-h-[80%] m-2 px-4 py-8 w-4/5 max-w-lg bg-white rounded-md shadow-md text-center relative overflow-y-scroll">
-          <button className="absolute top-2 right-4" onClick={() => onHide()}>
-            x
-          </button>
-          {children}
+      <div className="flex p-4 justify-center items-center">
+        <div className="rounded-md shadow-md text-center bg-white">
+          <div className="px-4 py-8">{children}</div>
         </div>
       </div>
     </div>

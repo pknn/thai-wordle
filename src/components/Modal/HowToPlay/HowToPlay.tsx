@@ -24,7 +24,7 @@ const HowToPlay = ({ shouldShow, onHide }: ContainerProps) => {
     }),
   )
 
-  const withVowelCorrectExample = thaiSplit('ด้วงถั่ว').map(
+  const withVowelCorrectExample = thaiSplit('ด้วงถั่ว่').map(
     (character, i): CharacterToken =>
       i === 0
         ? { character, guessState: 'Correct' }
@@ -60,7 +60,7 @@ const HowToPlay = ({ shouldShow, onHide }: ContainerProps) => {
         </p>
         <ExampleContainer>
           <Row wordToken={noVowelCorrectExample} />
-          <p>⬇</p>
+          <p>จะกลายเป็น</p>
           <Row wordToken={withVowelCorrectExample} />
           <p>
             มีตัวอักษร ด อยู่ในคำ และอยู่ในตำแหน่งที่ถูกต้อง จะทำการเพิ่ม ไม้โท
