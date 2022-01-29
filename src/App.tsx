@@ -22,7 +22,7 @@ import { GameStatus } from './lib/status'
 const App = () => {
   const [lastIndex, setLastIndex] = useState(0)
   const [status, setStatus] = useState<GameStatus>('play')
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoadedSolution, setIsLoadedSolution] = useState(false)
   const [submittedWords, setSubmittedWords] = useState<string[]>([])
   const [currentWord, setCurrentWord] = useState('')
   const [gameStatistics, setGameStatistics] = useState(getGameStatistics())
@@ -44,8 +44,11 @@ const App = () => {
         shouldShow: true,
       })
     } else {
-      setSubmittedWords(maybeGameState.submittedWords)
-      setIsLoaded(true)
+      const { submittedWords: submittedWordsFromState } = maybeGameState
+      setSubmittedWords(submittedWordsFromState)
+      setIsLoadedSolution(
+        isSolution(submittedWordsFromState[submittedWordsFromState.length - 1]),
+      )
     }
   }, [])
 
@@ -63,7 +66,11 @@ const App = () => {
   useEffect(() => {
     if (status === 'play') return
     setGameStatistics(
-      getFinishedGameStatistics(status, submittedWords.length - 1, !isLoaded),
+      getFinishedGameStatistics(
+        status,
+        submittedWords.length - 1,
+        !isLoadedSolution,
+      ),
     )
     setLastIndex(submittedWords.length - 1)
     setModalState({
