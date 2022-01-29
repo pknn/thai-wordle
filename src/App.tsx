@@ -38,6 +38,10 @@ const App = () => {
     const maybeGameState = loadGameStateFromLocalStorage()
     if (!maybeGameState || maybeGameState.solution !== solution) {
       setSubmittedWords([])
+      setModalState({
+        ...modalState,
+        shouldShow: true,
+      })
     } else {
       setSubmittedWords(maybeGameState.submittedWords)
       setIsLoaded(true)
@@ -118,7 +122,7 @@ const App = () => {
           gameStatistics={gameStatistics}
         />
       )}
-      <div className="md:container px-4 py-8 md:px-4 md:max-w-3xl">
+      <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
         <div className="px-4 flex justify-between">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>
           <button onClick={() => handleShowModal('HowToPlay')}>?</button>
@@ -131,21 +135,23 @@ const App = () => {
           />
           <Grid submittedWords={submittedWords} currentWord={currentWord} />
         </div>
+      </div>
+      <div className="flex bottom-0 px-4 flex-col">
         <Keyboard
           onPress={handlePress}
           onEnter={handleEnter}
           onDelete={handleDelete}
         />
-      </div>
-      <div className="flex bottom-0 px-4 flex-row md:flex-col">
-        <div className="text-xs">
-          Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
-          <a
-            className="underline text-blue-400"
-            href="https://thwordle.vercel.app/"
-          >
-            thwordle
-          </a>{' '}
+        <div className="py-2">
+          <div className="text-xs">
+            Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
+            <a
+              className="underline text-blue-400"
+              href="https://thwordle.vercel.app/"
+            >
+              thwordle
+            </a>{' '}
+          </div>
         </div>
       </div>
     </div>
