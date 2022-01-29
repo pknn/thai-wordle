@@ -1,7 +1,7 @@
 import { solution } from '../../../lib/word/guess'
 import ModalContainer, { ContainerProps } from '../ModalContainer'
 import HistogramChart from './HistogramChart/HistogramChart'
-import { memo, useEffect, useState } from 'react'
+import { memo, useMemo } from 'react'
 import { GameStatistics } from '../../../lib/stats/types'
 import { GameStatus } from '../../../lib/status'
 import StatisticWindow from './StatisticWindow'
@@ -21,22 +21,22 @@ const Summary = ({
   wonAt,
   gameStatistics,
 }: Props) => {
-  const resultText =
-    status === 'won' ? (
-      <div>
-        <h1>
-          คุณ <span className="text-green-500">ชนะ</span> ด้วยการทาย {wonAt + 1}{' '}
-          ครั้ง
-        </h1>
-      </div>
-    ) : (
-      <div>
-        <h1 className="text-xl">
-          คุณ <span className="text-red-500">แพ้ !!!!!!</span>
-        </h1>
-        <h2 className="text-md">คำที่ถูกต้องคือ {solution}</h2>
-      </div>
-    )
+  const hasWon = useMemo(() => status === 'won', [status])
+  const resultText = hasWon ? (
+    <div>
+      <h1>
+        คุณ <span className="text-green-500">ชนะ</span> ด้วยการทาย {wonAt + 1}{' '}
+        ครั้ง
+      </h1>
+    </div>
+  ) : (
+    <div>
+      <h1 className="text-xl">
+        คุณ <span className="text-red-500">แพ้ !!!!!!</span>
+      </h1>
+      <h2 className="text-md">คำที่ถูกต้องคือ {solution}</h2>
+    </div>
+  )
 
   return (
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
