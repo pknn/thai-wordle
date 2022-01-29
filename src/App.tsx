@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { QuestionMarkCircleIcon, ChartBarIcon } from '@heroicons/react/solid'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
@@ -124,9 +125,16 @@ const App = () => {
         />
       )}
       <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
-        <div className="px-4 flex justify-between">
+        <div className="px-4 flex justify-between items-center">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>
-          <button onClick={() => handleShowModal('HowToPlay')}>?</button>
+          <div className="flex items-center">
+            <button onClick={() => handleShowModal('Summary')}>
+              <ChartBarIcon className="h-5 w-5 text-gray-500" />
+            </button>
+            <button onClick={() => handleShowModal('HowToPlay')}>
+              <QuestionMarkCircleIcon className="h-5 w-5 text-gray-500" />
+            </button>
+          </div>
         </div>
         {isGodMode && <div className="px-4">คำวันนี้: {solution}</div>}
         <div className="relative">
