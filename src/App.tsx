@@ -37,7 +37,6 @@ const App = () => {
 
   useEffect(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
-    console.log(maybeGameState, maybeGameState?.solution === solution)
     if (!maybeGameState || maybeGameState.solution !== solution) {
       setSubmittedWords([])
       setModalState({
@@ -147,6 +146,7 @@ const App = () => {
       </div>
       <div className="flex bottom-0 px-4 flex-col">
         <Keyboard
+          submittedWords={submittedWords}
           onPress={handlePress}
           onEnter={handleEnter}
           onDelete={handleDelete}

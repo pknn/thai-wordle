@@ -15,7 +15,7 @@ const KeyboardRow = ({ row, index, onPress }: DataProps & ActionProps) => (
     {row.map((character, cIndex) => (
       <Key
         key={`${index}${cIndex}${character}`}
-        character={character}
+        characterWithStatus={character}
         onPress={onPress}
       />
     ))}
