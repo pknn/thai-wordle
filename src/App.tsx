@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { QuestionMarkCircleIcon, ChartBarIcon } from '@heroicons/react/solid'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
 import Keyboard from './components/Keyboard'
@@ -21,7 +22,7 @@ import { GameStatus } from './lib/status'
 const App = () => {
   const [lastIndex, setLastIndex] = useState(0)
   const [status, setStatus] = useState<GameStatus>('play')
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoadedSolution, setIsLoadedSolution] = useState(false)
   const [submittedWords, setSubmittedWords] = useState<string[]>([])
   const [currentWord, setCurrentWord] = useState('')
   const [gameStatistics, setGameStatistics] = useState(getGameStatistics())
@@ -29,7 +30,7 @@ const App = () => {
   const [shouldShowAlert, setShouldShowAlert] = useState(false)
   const [modalState, setModalState] = useState<ModalState>({
     modal: 'HowToPlay',
-    shouldShow: true,
+    shouldShow: false,
   })
 
   const [isGodMode, setIsGodMode] = useState(false)
@@ -38,15 +39,22 @@ const App = () => {
     const maybeGameState = loadGameStateFromLocalStorage()
     if (!maybeGameState || maybeGameState.solution !== solution) {
       setSubmittedWords([])
+      setModalState({
+        ...modalState,
+        shouldShow: true,
+      })
     } else {
-      setSubmittedWords(maybeGameState.submittedWords)
-      setIsLoaded(true)
+      const { submittedWords: submittedWordsFromState } = maybeGameState
+      setSubmittedWords(submittedWordsFromState)
+      setIsLoadedSolution(
+        isSolution(submittedWordsFromState[submittedWordsFromState.length - 1]),
+      )
     }
   }, [])
 
   useEffect(() => {
     const lastSubmittedWord = submittedWords[submittedWords.length - 1]
-    if (status !== 'play') return
+    if (status !== 'play' || !lastSubmittedWord) return
     if (isSolution(lastSubmittedWord)) {
       setStatus('won')
     } else if (submittedWords.length >= 6) {
@@ -58,7 +66,11 @@ const App = () => {
   useEffect(() => {
     if (status === 'play') return
     setGameStatistics(
-      getFinishedGameStatistics(status, submittedWords.length - 1, !isLoaded),
+      getFinishedGameStatistics(
+        status,
+        submittedWords.length - 1,
+        !isLoadedSolution,
+      ),
     )
     setLastIndex(submittedWords.length - 1)
     setModalState({
@@ -104,26 +116,7 @@ const App = () => {
 
   return (
     <div className="w-full h-screen">
-      <div className="md:container px-4 py-8 md:px-4 md:max-w-3xl">
-        <div className="px-4 flex justify-between">
-          <div className="text-xl">ไทยเวิร์ดเดิล</div>
-          <button onClick={() => handleShowModal('HowToPlay')}>?</button>
-        </div>
-        {isGodMode && <div className="px-4">คำวันนี้: {solution}</div>}
-        <div className="relative">
-          <Alert
-            shouldShow={shouldShowAlert}
-            onHide={() => setShouldShowAlert(false)}
-          />
-          <Grid submittedWords={submittedWords} currentWord={currentWord} />
-        </div>
-        <Keyboard
-          onPress={handlePress}
-          onEnter={handleEnter}
-          onDelete={handleDelete}
-        />
-      </div>
-      {modalState.modal === 'HowToPlay' && status === 'play' ? (
+      {modalState.modal === 'HowToPlay' ? (
         <HowToPlay
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
@@ -137,15 +130,44 @@ const App = () => {
           gameStatistics={gameStatistics}
         />
       )}
-      <div className="flex absolute bottom-4 px-4 flex-row md:flex-col">
-        <div className="text-xs">
-          Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
-          <a
-            className="underline text-blue-400"
-            href="https://thwordle.vercel.app/"
-          >
-            thwordle
-          </a>{' '}
+      <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
+        <div className="px-4 flex justify-between items-center">
+          <div className="text-xl">ไทยเวิร์ดเดิล</div>
+          <div className="flex items-center">
+            <button onClick={() => handleShowModal('Summary')}>
+              <ChartBarIcon className="h-5 w-5 text-gray-500" />
+            </button>
+            <button onClick={() => handleShowModal('HowToPlay')}>
+              <QuestionMarkCircleIcon className="h-5 w-5 text-gray-500" />
+            </button>
+          </div>
+        </div>
+        {isGodMode && <div className="px-4">คำวันนี้: {solution}</div>}
+        <div className="relative">
+          <Alert
+            shouldShow={shouldShowAlert}
+            onHide={() => setShouldShowAlert(false)}
+          />
+          <Grid submittedWords={submittedWords} currentWord={currentWord} />
+        </div>
+      </div>
+      <div className="flex bottom-0 px-4 flex-col">
+        <Keyboard
+          submittedWords={submittedWords}
+          onPress={handlePress}
+          onEnter={handleEnter}
+          onDelete={handleDelete}
+        />
+        <div className="py-2">
+          <div className="text-xs">
+            Credits: วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
+            <a
+              className="underline text-blue-400"
+              href="https://thwordle.vercel.app/"
+            >
+              thwordle
+            </a>{' '}
+          </div>
         </div>
       </div>
     </div>
