@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   isExtendedCharacter,
   toExtendedKeySymbol,
@@ -27,8 +28,9 @@ const Key = ({ character, onPress }: Props) => {
     ? toExtendedKeySymbol(character as ExtendedCharacter)
     : character
 
-  const handlePress = () => {
+  const handlePress = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPress(character as CharacterExtended)
+    event.currentTarget.blur()
   }
 
   return (
