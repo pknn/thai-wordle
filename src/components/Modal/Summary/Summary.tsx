@@ -1,45 +1,73 @@
+import { ShareIcon } from '@heroicons/react/solid'
 import ModalContainer, { ContainerProps } from '../ModalContainer'
 import HistogramChart from './HistogramChart/HistogramChart'
-import { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { GameStatistics } from '../../../lib/stats/types'
-import { GameStatus } from '../../../lib/status'
 import StatisticWindow from './StatisticWindow'
 
 interface DataProps {
-  status: GameStatus
-  wonAt: number
   gameStatistics: GameStatistics
 }
 
-type Props = DataProps & ContainerProps
+interface ActionProps {
+  onShare: () => void
+}
 
-const Summary = ({ shouldShow, onHide, gameStatistics }: Props) => (
-  <ModalContainer shouldShow={shouldShow} onHide={onHide}>
-    <h2>สถิติ</h2>
-    <div className="my-4">
-      <div className="px-4 flex justify-between my-4">
-        <StatisticWindow
-          description="การเล่น"
-          factor={gameStatistics.totalGames}
-        />
-        <StatisticWindow
-          description="ร้อยละ"
-          factor={gameStatistics.successRate}
-        />
-        <StatisticWindow
-          description="ชนะต่อ"
-          factor={gameStatistics.currentStreak}
-        />
-        <StatisticWindow
-          description="ชนะต่อมาก"
-          factor={gameStatistics.bestStreak}
-        />
+type Props = DataProps & ActionProps & ContainerProps
+
+const Summary = ({ shouldShow, onHide, gameStatistics, onShare }: Props) => {
+  const [isCopied, setIsCopied] = useState(false)
+  const handleOnShare = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setIsCopied(true)
+    setTimeout(() => {
+      setIsCopied(false)
+    }, 1000)
+    event.stopPropagation()
+    onShare()
+  }
+
+  const copiedStatusClassName = [
+    'mt-2 text-xs transition-opacity duration-500 ease-in-out',
+    isCopied ? 'opacity-1' : 'opacity-0',
+  ].join(' ')
+
+  return (
+    <ModalContainer shouldShow={shouldShow} onHide={onHide}>
+      <h2>สถิติ</h2>
+      <div className="my-4">
+        <div className="px-4 flex justify-between my-4">
+          <StatisticWindow
+            description="การเล่น"
+            factor={gameStatistics.totalGames}
+          />
+          <StatisticWindow
+            description="ร้อยละ"
+            factor={Math.round(gameStatistics.successRate * 100) / 100}
+          />
+          <StatisticWindow
+            description="ชนะติดต่อ"
+            factor={gameStatistics.currentStreak}
+          />
+          <StatisticWindow
+            description="ดีที่สุด"
+            factor={gameStatistics.bestStreak}
+          />
+        </div>
+        <div>
+          <HistogramChart histogram={gameStatistics.histogram} />
+        </div>
+        <div>
+          <button
+            className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
+            onClickCapture={handleOnShare}
+          >
+            Share <ShareIcon className="h-5 w-5 text-white inline-block" />
+          </button>
+          <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
+        </div>
       </div>
-      <div>
-        <HistogramChart histogram={gameStatistics.histogram} />
-      </div>
-    </div>
-  </ModalContainer>
-)
+    </ModalContainer>
+  )
+}
 
 export default memo(Summary)

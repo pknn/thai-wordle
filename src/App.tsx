@@ -16,6 +16,7 @@ import {
 import {
   getFinishedGameStatistics,
   getGameStatistics,
+  toSharableGameStatistics,
 } from './lib/stats/helper'
 import { GameStatus } from './lib/status'
 
@@ -116,6 +117,10 @@ const App = () => {
     })
   }
 
+  const handleShare = () => {
+    navigator.clipboard.writeText(toSharableGameStatistics(submittedWords))
+  }
+
   return (
     <div className="w-full h-screen">
       {modalState.modal === 'HowToPlay' ? (
@@ -127,9 +132,8 @@ const App = () => {
         <Summary
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
-          status={status}
-          wonAt={lastIndex}
           gameStatistics={gameStatistics}
+          onShare={handleShare}
         />
       )}
       <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
