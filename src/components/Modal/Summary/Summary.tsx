@@ -1,9 +1,11 @@
 import { ShareIcon } from '@heroicons/react/solid'
+import moment from 'moment'
 import ModalContainer, { ContainerProps } from '../ModalContainer'
 import HistogramChart from './HistogramChart/HistogramChart'
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { GameStatistics } from '../../../lib/stats/types'
 import StatisticWindow from './StatisticWindow'
+import { getTimeLeft } from '../../../lib/time'
 
 interface DataProps {
   gameStatistics: GameStatistics
@@ -24,6 +26,8 @@ const Summary = ({
   onShare,
 }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft())
+
   const handleOnShare = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsCopied(true)
     setTimeout(() => {
@@ -38,9 +42,16 @@ const Summary = ({
     isCopied ? 'opacity-1' : 'opacity-0',
   ].join(' ')
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(getTimeLeft())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
-      <h2>สถิติ</h2>
+      <h2 className="text-lg">สถิติ</h2>
       <div className="my-4">
         <div className="px-4 flex justify-between my-4">
           <StatisticWindow
@@ -74,6 +85,9 @@ const Summary = ({
             <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
           </div>
         )}
+        <div className="my-2 text-sm">
+          มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}
+        </div>
       </div>
     </ModalContainer>
   )

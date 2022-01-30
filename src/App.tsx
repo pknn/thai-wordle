@@ -39,7 +39,7 @@ const App = () => {
 
   useEffect(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
-    if (!maybeGameState || maybeGameState.solution !== solution) {
+    if (!maybeGameState || maybeGameState.solution !== solution.word) {
       setSubmittedWords([])
       setModalState({
         ...modalState,
@@ -64,7 +64,7 @@ const App = () => {
     } else if (submittedWords.length >= 6) {
       setStatus('lost')
     }
-    saveGameStateToLocalStorage({ submittedWords, solution })
+    saveGameStateToLocalStorage({ submittedWords, solution: solution.word })
   }, [submittedWords])
 
   useEffect(() => {
@@ -155,7 +155,7 @@ const App = () => {
             </button>
           </div>
         </div>
-        {isGodMode && <div className="px-4">คำวันนี้: {solution}</div>}
+        {isGodMode && <div className="px-4">คำวันนี้: {solution.word}</div>}
         <div className="relative">
           <Alert
             shouldShow={shouldShowAlert}
