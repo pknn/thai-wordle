@@ -20,7 +20,6 @@ import {
 } from './lib/stats/helper'
 import { GameStatus } from './lib/status'
 import Footer from './components/Footer'
-import { saveWordsFrequency } from './lib/collection/collection'
 
 const App = () => {
   const [status, setStatus] = useState<GameStatus>('play')

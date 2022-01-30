@@ -25,8 +25,8 @@ const ModalContainer = ({
       onClick={() => onHide()}
     >
       <div className="flex p-4 justify-center overscroll-contain">
-        <div className="rounded-md shadow-md text-center bg-white w-full sm:w-1/2 lg:w-1/3">
-          <div className="absolute right-8 top-8">
+        <div className="rounded-md shadow-md text-center bg-white w-full sm:w-1/2 lg:w-1/3 relative">
+          <div className="absolute right-6 top-6">
             <XIcon className="h-5 w-5 text-gray-500" onClick={() => onHide()} />
           </div>
           <div className="px-4 py-8">{children}</div>
