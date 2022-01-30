@@ -144,7 +144,7 @@ const App = () => {
             submittedWords={submittedWords}
             onHide={handleHideModal}
             gameStatistics={gameStatistics}
-            shouldShowShareButton={shouldShowShareButton}
+            isGameFinished={shouldShowShareButton}
             onShare={handleShare}
           />
         )
