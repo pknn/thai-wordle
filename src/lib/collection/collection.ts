@@ -20,12 +20,15 @@ export const getWordsFrequency = async (
   submittedWords: string[],
 ): Promise<WordFrequency[]> => {
   try {
-    const { body } = await supabase
+    let query = supabase
       .from('words')
-      .select('id, word,frequency')
-      .or(toFilter(submittedWords))
+      .select('id,word,frequency')
       .order('frequency', { ascending: false })
-    return body as WordFrequency[]
+    if (submittedWords.length >= 2) query = query.or(toFilter(submittedWords))
+
+    const { body } = await query
+
+    return (body as WordFrequency[]) || []
   } catch (error) {
     console.error('Error fetching from Word collection')
     return []
@@ -38,7 +41,7 @@ export const getThreeMostFrequentWords = async (
   try {
     const { body } = await supabase
       .from('words')
-      .select('id, word,frequency')
+      .select('id,word,frequency')
       .neq('word', solution)
       .order('frequency', { ascending: false })
       .limit(3)
@@ -53,13 +56,19 @@ export const saveWordsFrequency = async (
   submittedWords: string[],
 ): Promise<void> => {
   const oldWordsFrequency = await getWordsFrequency(submittedWords)
+  const wordsNotInTable = submittedWords
+    .filter((word) => !oldWordsFrequency.map((f) => f.word).includes(word))
+    .map((word) => ({ word, frequency: 1 }))
   const updatedWordsFrequency: WordFrequency[] = oldWordsFrequency.map((w) => ({
     ...w,
     frequency: w.frequency + 1,
   }))
 
+  console.log(wordsNotInTable, updatedWordsFrequency)
+
   try {
     await supabase.from('words').upsert(updatedWordsFrequency)
+    await supabase.from('words').insert(wordsNotInTable)
   } catch (error) {
     console.error('Error saving to Word collecition')
   }
