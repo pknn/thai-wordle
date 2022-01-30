@@ -182,7 +182,7 @@ const App = () => {
           </a>
           <a
             className="underline text-blue-400"
-            href="https://github.com/pknn"
+            href="https://github.com/pknn/thai-wordle"
             target="_blank"
             rel="noreferrer"
           >
