@@ -84,5 +84,9 @@ export const toSharableGameStatistics = (submittedWords: string[]): string => {
       .join(''),
   )
 
-  return [`ไทยเวิร์ดเดิล ${submittedWords.length}/6`, ...guessStates].join('\n')
+  return [
+    `ไทยเวิร์ดเดิล ${submittedWords.length}/6`,
+    ...guessStates,
+    'https://thai-wordle.luckyboi.dev/',
+  ].join('\n')
 }
