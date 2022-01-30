@@ -127,22 +127,36 @@ const App = () => {
     navigator.clipboard.writeText(content)
   }
 
+  const handleCheckCollection = () => {
+    console.log('check collection')
+  }
+
+  const modal = useMemo(() => {
+    switch (modalState.modal) {
+      case 'HowToPlay':
+        return (
+          <HowToPlay
+            shouldShow={modalState.shouldShow}
+            onHide={handleHideModal}
+          />
+        )
+      case 'Summary':
+        return (
+          <Summary
+            shouldShow={modalState.shouldShow}
+            onHide={handleHideModal}
+            gameStatistics={gameStatistics}
+            shouldShowShareButton={shouldShowShareButton}
+            onShare={handleShare}
+            onCheckCollection={handleCheckCollection}
+          />
+        )
+    }
+  }, [modalState.modal])
+
   return (
     <div className="w-full h-screen">
-      {modalState.modal === 'HowToPlay' ? (
-        <HowToPlay
-          shouldShow={modalState.shouldShow}
-          onHide={handleHideModal}
-        />
-      ) : (
-        <Summary
-          shouldShow={modalState.shouldShow}
-          onHide={handleHideModal}
-          gameStatistics={gameStatistics}
-          shouldShowShareButton={shouldShowShareButton}
-          onShare={handleShare}
-        />
-      )}
+      {modal}
       <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
         <div className="px-4 flex justify-between items-center">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>

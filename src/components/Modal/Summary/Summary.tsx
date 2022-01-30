@@ -13,6 +13,7 @@ interface DataProps {
 
 interface ActionProps {
   onShare: () => void
+  onCheckCollection: () => void
 }
 
 type Props = DataProps & ActionProps & ContainerProps
@@ -23,6 +24,7 @@ const Summary = ({
   gameStatistics,
   shouldShowShareButton,
   onShare,
+  onCheckCollection,
 }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
   const [timeLeft, setTimeLeft] = useState(() => getTimeLeft())
@@ -74,7 +76,15 @@ const Summary = ({
           <HistogramChart histogram={gameStatistics.histogram} />
         </div>
         {shouldShowShareButton && (
-          <div>
+          <div className="flex flex-col gap-4">
+            <div>
+              <button
+                onClickCapture={onCheckCollection}
+                className="text-sm text-blue-500 underline"
+              >
+                มีใครใจตรงกับคุณมั้ย?
+              </button>
+            </div>
             <div>
               <button
                 className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
@@ -84,7 +94,7 @@ const Summary = ({
               </button>
               <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
             </div>
-            <div className="my-2 text-sm">
+            <div className="text-sm">
               มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}
             </div>
           </div>
