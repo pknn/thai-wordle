@@ -80,7 +80,7 @@ const Summary = ({
                 className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
                 onClickCapture={handleOnShare}
               >
-                Share <ShareIcon className="h-5 w-5 text-white inline-block" />
+                ส่งต่อ <ShareIcon className="h-5 w-5 text-white inline-block" />
               </button>
               <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
             </div>

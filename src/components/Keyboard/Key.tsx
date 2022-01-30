@@ -33,6 +33,7 @@ const Key = ({ characterWithStatus, onPress }: Props) => {
 
   const color = useMemo(() => {
     if (isUnpressable) return 'bg-gray-100'
+    if (character === 'Enter') return 'bg-blue-400 text-white'
     return colorStatusMap[status]
   }, [status])
 
