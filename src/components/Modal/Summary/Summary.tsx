@@ -6,6 +6,7 @@ import { GameStatistics } from '../../../lib/stats/types'
 import StatisticWindow from './StatisticWindow'
 import { getTimeLeft } from '../../../lib/time'
 import OnlineStatistics from './OnlineStatistics'
+import { saveWordsFrequency } from '../../../lib/collection/collection'
 
 interface DataProps {
   gameStatistics: GameStatistics
