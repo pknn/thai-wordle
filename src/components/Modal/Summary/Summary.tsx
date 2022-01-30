@@ -1,5 +1,4 @@
 import { ShareIcon } from '@heroicons/react/solid'
-import moment from 'moment'
 import ModalContainer, { ContainerProps } from '../ModalContainer'
 import HistogramChart from './HistogramChart/HistogramChart'
 import React, { memo, useEffect, useState } from 'react'
