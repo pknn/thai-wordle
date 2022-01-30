@@ -5,10 +5,14 @@ import React, { memo, useEffect, useState } from 'react'
 import { GameStatistics } from '../../../lib/stats/types'
 import StatisticWindow from './StatisticWindow'
 import { getTimeLeft } from '../../../lib/time'
+import OnlineStatistics from './OnlineStatistics'
+import Solution from './Solution'
 
 interface DataProps {
   gameStatistics: GameStatistics
-  shouldShowShareButton: boolean
+  isGameFinished: boolean
+  submittedWords: string[]
+  isLoadedSolution: boolean
 }
 
 interface ActionProps {
@@ -21,7 +25,9 @@ const Summary = ({
   shouldShow,
   onHide,
   gameStatistics,
-  shouldShowShareButton,
+  isGameFinished,
+  submittedWords,
+  isLoadedSolution,
   onShare,
 }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -36,11 +42,6 @@ const Summary = ({
     onShare()
   }
 
-  const copiedStatusClassName = [
-    'mt-2 text-xs transition-opacity duration-500 ease-in-out',
-    isCopied ? 'opacity-1' : 'opacity-0',
-  ].join(' ')
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(getTimeLeft())
@@ -50,6 +51,7 @@ const Summary = ({
 
   return (
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
+      <Solution submittedWords={submittedWords} />
       <h2 className="text-lg">สถิติ</h2>
       <div className="my-4">
         <div className="px-4 flex justify-between my-4">
@@ -73,18 +75,23 @@ const Summary = ({
         <div>
           <HistogramChart histogram={gameStatistics.histogram} />
         </div>
-        {shouldShowShareButton && (
-          <div>
+        {isGameFinished && (
+          <div className="flex flex-col gap-6 items-center">
+            <OnlineStatistics
+              submittedWords={submittedWords}
+              isGameFinished={isGameFinished}
+              isLoadedSolution={isLoadedSolution}
+            />
             <div>
               <button
                 className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
                 onClickCapture={handleOnShare}
               >
-                ส่งต่อ <ShareIcon className="h-5 w-5 text-white inline-block" />
+                {isCopied ? 'คัดลอกแล้ว' : 'ส่งต่อ'}{' '}
+                <ShareIcon className="h-5 w-5 text-white inline-block" />
               </button>
-              <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
             </div>
-            <div className="my-2 text-sm">
+            <div className="text-sm">
               มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}
             </div>
           </div>

@@ -19,6 +19,7 @@ import {
   toSharableGameStatistics,
 } from './lib/stats/helper'
 import { GameStatus } from './lib/status'
+import Footer from './components/Footer'
 
 const App = () => {
   const [status, setStatus] = useState<GameStatus>('play')
@@ -127,22 +128,34 @@ const App = () => {
     navigator.clipboard.writeText(content)
   }
 
+  const modal = useMemo(() => {
+    if (!modalState.shouldShow) return
+    switch (modalState.modal) {
+      case 'HowToPlay':
+        return (
+          <HowToPlay
+            shouldShow={modalState.shouldShow}
+            onHide={handleHideModal}
+          />
+        )
+      case 'Summary':
+        return (
+          <Summary
+            shouldShow={modalState.shouldShow}
+            submittedWords={submittedWords}
+            onHide={handleHideModal}
+            gameStatistics={gameStatistics}
+            isGameFinished={shouldShowShareButton}
+            isLoadedSolution={isLoadedSolution}
+            onShare={handleShare}
+          />
+        )
+    }
+  }, [modalState])
+
   return (
     <div className="w-full h-screen">
-      {modalState.modal === 'HowToPlay' ? (
-        <HowToPlay
-          shouldShow={modalState.shouldShow}
-          onHide={handleHideModal}
-        />
-      ) : (
-        <Summary
-          shouldShow={modalState.shouldShow}
-          onHide={handleHideModal}
-          gameStatistics={gameStatistics}
-          shouldShowShareButton={shouldShowShareButton}
-          onShare={handleShare}
-        />
-      )}
+      {modal}
       <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
         <div className="px-4 flex justify-between items-center">
           <div className="text-xl">ไทยเวิร์ดเดิล</div>
@@ -171,35 +184,7 @@ const App = () => {
           onEnter={handleEnter}
           onDelete={handleDelete}
         />
-        <div className="flex flex-col items-center gap-1 py-2 text-xs">
-          <a
-            className="underline text-blue-400"
-            href="https://github.com/pknn/thai-wordle/issues/new"
-            target="_blank"
-            rel="noreferrer"
-          >
-            เจอบั๊ก / ข้อเสนอแนะ
-          </a>
-          <a
-            className="underline text-blue-400"
-            href="https://github.com/pknn/thai-wordle"
-            target="_blank"
-            rel="noreferrer"
-          >
-            กิตฮับ
-          </a>
-          <div>
-            วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
-            <a
-              className="underline text-blue-400"
-              href="https://thwordle.vercel.app/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              thwordle
-            </a>
-          </div>
-        </div>
+        <Footer />
       </div>
     </div>
   )
