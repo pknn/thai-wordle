@@ -75,18 +75,20 @@ const Summary = ({
         </div>
         {shouldShowShareButton && (
           <div>
-            <button
-              className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
-              onClickCapture={handleOnShare}
-            >
-              Share <ShareIcon className="h-5 w-5 text-white inline-block" />
-            </button>
-            <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
+            <div>
+              <button
+                className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
+                onClickCapture={handleOnShare}
+              >
+                Share <ShareIcon className="h-5 w-5 text-white inline-block" />
+              </button>
+              <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
+            </div>
+            <div className="my-2 text-sm">
+              มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}
+            </div>
           </div>
         )}
-        <div className="my-2 text-sm">
-          มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}
-        </div>
       </div>
     </ModalContainer>
   )
