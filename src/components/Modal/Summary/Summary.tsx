@@ -6,6 +6,7 @@ import { GameStatistics } from '../../../lib/stats/types'
 import StatisticWindow from './StatisticWindow'
 import { getTimeLeft } from '../../../lib/time'
 import OnlineStatistics from './OnlineStatistics'
+import Solution from './Solution'
 
 interface DataProps {
   gameStatistics: GameStatistics
@@ -50,6 +51,7 @@ const Summary = ({
 
   return (
     <ModalContainer shouldShow={shouldShow} onHide={onHide}>
+      <Solution submittedWords={submittedWords} />
       <h2 className="text-lg">สถิติ</h2>
       <div className="my-4">
         <div className="px-4 flex justify-between my-4">
