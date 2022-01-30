@@ -9,7 +9,7 @@ import {
 
 const extendedCharacterKeySymbolMap: Record<ExtendedCharacter, string> = {
   Shift: '⇪',
-  Enter: '↵',
+  Enter: 'ส่ง',
   Delete: '⌫',
 }
 
