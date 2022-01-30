@@ -4,7 +4,8 @@ interface Props {
 }
 
 const MostFrequentWord = ({ word, index }: Props) => {
-  const className = ['w-16 bg-yellow-400', `h-${8 - index * 2}`].join(' ')
+  const heights = ['h-8', 'h-6', 'h-4']
+  const className = ['w-16 bg-yellow-400', heights[index]].join(' ')
   return (
     <div>
       <span>{word}</span>
