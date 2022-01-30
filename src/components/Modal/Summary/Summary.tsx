@@ -13,7 +13,6 @@ interface DataProps {
 
 interface ActionProps {
   onShare: () => void
-  onCheckCollection: () => void
 }
 
 type Props = DataProps & ActionProps & ContainerProps
@@ -24,7 +23,6 @@ const Summary = ({
   gameStatistics,
   shouldShowShareButton,
   onShare,
-  onCheckCollection,
 }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
   const [timeLeft, setTimeLeft] = useState(() => getTimeLeft())
@@ -37,11 +35,6 @@ const Summary = ({
     event.stopPropagation()
     onShare()
   }
-
-  const copiedStatusClassName = [
-    'mt-2 text-xs transition-opacity duration-500 ease-in-out',
-    isCopied ? 'opacity-1' : 'opacity-0',
-  ].join(' ')
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,23 +69,39 @@ const Summary = ({
           <HistogramChart histogram={gameStatistics.histogram} />
         </div>
         {shouldShowShareButton && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             <div>
-              <button
-                onClickCapture={onCheckCollection}
-                className="text-sm text-blue-500 underline"
-              >
-                มีใครใจตรงกับคุณมั้ย?
-              </button>
+              <h1>คำที่มีคนทายเยอะที่สุดในวันนี้</h1>
+              <div className="flex justify-center items-end">
+                <div className="order-2">
+                  <span>ดอกไม้</span>
+                  <div className="h-10 w-16 bg-yellow-400"></div>
+                </div>
+                <div>
+                  <span>ปาหนัน</span>
+                  <div className="h-6 w-16 bg-yellow-400"></div>
+                </div>
+                <div className="order-3">
+                  <span>ดุเหว่า</span>
+                  <div className="h-4 w-16 bg-yellow-400"></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h1>คุณทายคำว่า</h1>
+              <div className="flex justify-center items-end">
+                <h1 className="text-xl">ทำงาน</h1>
+              </div>
+              <h1>เหมือนกับคนอีก 18 คน</h1>
             </div>
             <div>
               <button
                 className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
                 onClickCapture={handleOnShare}
               >
-                Share <ShareIcon className="h-5 w-5 text-white inline-block" />
+                {isCopied ? 'คัดลอกแล้ว' : 'ส่งต่อ'}{' '}
+                <ShareIcon className="h-5 w-5 text-white inline-block" />
               </button>
-              <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
             </div>
             <div className="text-sm">
               มาเล่นคำใหม่ภายใน {timeLeft.format('HH:mm:ss')}

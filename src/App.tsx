@@ -127,11 +127,8 @@ const App = () => {
     navigator.clipboard.writeText(content)
   }
 
-  const handleCheckCollection = () => {
-    console.log('check collection')
-  }
-
   const modal = useMemo(() => {
+    if (!modalState.shouldShow) return
     switch (modalState.modal) {
       case 'HowToPlay':
         return (
@@ -148,11 +145,10 @@ const App = () => {
             gameStatistics={gameStatistics}
             shouldShowShareButton={shouldShowShareButton}
             onShare={handleShare}
-            onCheckCollection={handleCheckCollection}
           />
         )
     }
-  }, [modalState.modal])
+  }, [modalState])
 
   return (
     <div className="w-full h-screen">
