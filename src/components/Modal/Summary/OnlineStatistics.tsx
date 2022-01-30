@@ -36,7 +36,11 @@ const OnlineStatistics = ({
     const threeMostFrequentWords = await getThreeMostFrequentWords(
       solution.word,
     )
-    const mostGuessedWords = await getWordsFrequency(submittedWordsNotSolution)
+    const mostGuessedWords = await getWordsFrequency(
+      submittedWordsNotSolution.length > 0
+        ? submittedWordsNotSolution
+        : submittedWords,
+    )
     setThreeMostFrequentWord(threeMostFrequentWords)
     setMostGuessedWord(mostGuessedWords[0])
     setIsLoading(false)
