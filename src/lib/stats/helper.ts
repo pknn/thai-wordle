@@ -3,6 +3,8 @@ import {
   loadStatisticsFromLocalStorage,
   saveStatisticsToLocalStorage,
 } from '../storage'
+import { getGuessState } from '../word/guess'
+import { GuessState } from '../word/types'
 import { ChartModel, GameStatistics, Histogram } from './types'
 
 export const toChartModels = (histogram: Histogram): ChartModel[] => {
@@ -64,4 +66,23 @@ export const getFinishedGameStatistics = (
   )
   saveStatisticsToLocalStorage(updatedStatistics)
   return updatedStatistics
+}
+
+const guessStateBlockColorMap: Record<GuessState, string> = {
+  Correct: '🟩',
+  Present: '🟨',
+  Absent: '⬛',
+}
+
+export const toSharableGameStatistics = (submittedWords: string[]): string => {
+  const guessStates = submittedWords.map((submittedWord) =>
+    getGuessState(submittedWord)
+      .map(
+        (characterToken) =>
+          guessStateBlockColorMap[characterToken.guessState as GuessState],
+      )
+      .join(''),
+  )
+
+  return [`ไทยเวิร์ดเดิล ${submittedWords.length}/6`, ...guessStates].join('\n')
 }
