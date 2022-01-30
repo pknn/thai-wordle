@@ -14,7 +14,7 @@ const Footer = () => (
       target="_blank"
       rel="noreferrer"
     >
-      Github
+      กิตฮับ
     </a>
     <div>
       วิธีการเล่นได้แรงบันดาลใจ (ก๊อป?) มาจาก{' '}
