@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { QuestionMarkCircleIcon, ChartBarIcon } from '@heroicons/react/solid'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
@@ -16,11 +16,11 @@ import {
 import {
   getFinishedGameStatistics,
   getGameStatistics,
+  toSharableGameStatistics,
 } from './lib/stats/helper'
 import { GameStatus } from './lib/status'
 
 const App = () => {
-  const [lastIndex, setLastIndex] = useState(0)
   const [status, setStatus] = useState<GameStatus>('play')
   const [isLoadedSolution, setIsLoadedSolution] = useState(false)
   const [submittedWords, setSubmittedWords] = useState<string[]>([])
@@ -34,6 +34,8 @@ const App = () => {
   })
 
   const [isGodMode, setIsGodMode] = useState(false)
+
+  const shouldShowShareButton = useMemo(() => status !== 'play', [status])
 
   useEffect(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
@@ -74,7 +76,6 @@ const App = () => {
         !isLoadedSolution,
       ),
     )
-    setLastIndex(submittedWords.length - 1)
     setModalState({
       modal: 'Summary',
       shouldShow: true,
@@ -116,6 +117,16 @@ const App = () => {
     })
   }
 
+  const handleShare = () => {
+    const content = toSharableGameStatistics(submittedWords)
+    if (!!navigator.share)
+      navigator.share({
+        title: 'ไทยเวิร์ดเดิ้ล',
+        text: content,
+      })
+    navigator.clipboard.writeText(content)
+  }
+
   return (
     <div className="w-full h-screen">
       {modalState.modal === 'HowToPlay' ? (
@@ -127,9 +138,9 @@ const App = () => {
         <Summary
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
-          status={status}
-          wonAt={lastIndex}
           gameStatistics={gameStatistics}
+          shouldShowShareButton={shouldShowShareButton}
+          onShare={handleShare}
         />
       )}
       <div className="md:container px-4 pt-8 md:px-4 md:max-w-3xl">
@@ -171,7 +182,7 @@ const App = () => {
           </a>
           <a
             className="underline text-blue-400"
-            href="https://github.com/pknn"
+            href="https://github.com/pknn/thai-wordle"
             target="_blank"
             rel="noreferrer"
           >

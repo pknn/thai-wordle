@@ -1,3 +1,5 @@
+import { GuessState } from '../word/types'
+
 export type Character =
   | 'ภ'
   | 'ถ'
@@ -69,9 +71,9 @@ export type Character =
 
 export type ExtendedCharacter = 'Enter' | 'Shift' | 'Delete'
 
-export type CharacterExtended = Character | ExtendedCharacter | ' '
-
 export type TypableCharacter = Character | ExtendedCharacter
+
+export type CharacterExtended = TypableCharacter | ' '
 
 export type BaseKeyRow = CharacterExtended[]
 
@@ -82,7 +84,7 @@ export interface BaseKeyboardLayout {
   shifted: BaseKeySet
 }
 
-export type KeyStatus = 'Correct' | 'Present' | 'Absent' | 'Unused'
+export type KeyStatus = GuessState | 'Unused'
 
 export interface CharacterExtendedWithStatus {
   character: CharacterExtended
