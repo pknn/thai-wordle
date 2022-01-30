@@ -1,11 +1,13 @@
 import { CogIcon } from '@heroicons/react/solid'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   getThreeMostFrequentWords,
   getWordsFrequency,
   saveWordsFrequency,
 } from '../../../lib/collection/collection'
 import { WordFrequency } from '../../../lib/collection/types'
+import { isSolution, solution } from '../../../lib/word/guess'
+import MostFrequentWord from './MostFrequentWord'
 
 interface DataProps {
   submittedWords: string[]
@@ -23,12 +25,18 @@ const OnlineStatistics = ({
     WordFrequency[]
   >([])
   const [mostGuessedWord, setMostGuessedWord] = useState<WordFrequency>()
+  const submittedWordsNotSolution = useMemo(
+    () => submittedWords.filter((word) => !isSolution(word)),
+    [submittedWords],
+  )
 
   const fetchOnlineStatistics = async () => {
     setIsLoading(true)
-    if (!isLoadedSolution) await saveWordsFrequency(submittedWords)
-    const threeMostFrequentWords = await getThreeMostFrequentWords()
-    const mostGuessedWords = await getWordsFrequency(submittedWords)
+    if (!isLoadedSolution) await saveWordsFrequency(submittedWordsNotSolution)
+    const threeMostFrequentWords = await getThreeMostFrequentWords(
+      solution.word,
+    )
+    const mostGuessedWords = await getWordsFrequency(submittedWordsNotSolution)
     setThreeMostFrequentWord(threeMostFrequentWords)
     setMostGuessedWord(mostGuessedWords[0])
     setIsLoading(false)
@@ -39,30 +47,37 @@ const OnlineStatistics = ({
     fetchOnlineStatistics()
   }, [isGameFinished])
 
-  return !isLoading && threeMostFrequentWord.length > 0 && mostGuessedWord ? (
+  return !isLoading ? (
     <>
       <div>
         <h1>คุณทายคำว่า</h1>
         <div className="flex justify-center items-end">
-          <h1 className="text-xl">{mostGuessedWord?.word}</h1>
+          <h1 className="text-xl">
+            {mostGuessedWord?.word || submittedWords[0]}
+          </h1>
         </div>
-        <h1>เหมือนกับคนอีก {mostGuessedWord?.frequency} คน</h1>
+        <h1>
+          {mostGuessedWord
+            ? `เหมือนกับคนอีก ${mostGuessedWord?.frequency} คน`
+            : 'เป็นคนแรก'}
+        </h1>
       </div>
       <div>
         <h1>คำที่มีคนทายเยอะที่สุดในวันนี้</h1>
         <div className="flex justify-center items-end">
-          <div className="order-2">
-            <span>{threeMostFrequentWord[0].word}</span>
-            <div className="h-10 w-16 bg-yellow-400"></div>
-          </div>
-          <div>
-            <span>{threeMostFrequentWord[1].word}</span>
-            <div className="h-6 w-16 bg-yellow-400"></div>
-          </div>
-          <div className="order-3">
-            <span>{threeMostFrequentWord[2].word}</span>
-            <div className="h-4 w-16 bg-yellow-400"></div>
-          </div>
+          {threeMostFrequentWord.length > 0 ? (
+            threeMostFrequentWord.map((wordFrequency, index) => (
+              <MostFrequentWord
+                key={wordFrequency.word}
+                word={wordFrequency.word}
+                index={index}
+              />
+            ))
+          ) : (
+            <span className="text-sm">
+              แป่ว! ยังไม่มีคนเล่นเลยจ้า ไปชวนเพื่อนๆมาเล่นกัน
+            </span>
+          )}
         </div>
       </div>
     </>

@@ -32,11 +32,14 @@ export const getWordsFrequency = async (
   }
 }
 
-export const getThreeMostFrequentWords = async (): Promise<WordFrequency[]> => {
+export const getThreeMostFrequentWords = async (
+  solution: string,
+): Promise<WordFrequency[]> => {
   try {
     const { body } = await supabase
       .from('words')
       .select('id, word,frequency')
+      .neq('word', solution)
       .order('frequency', { ascending: false })
       .limit(3)
     return body as WordFrequency[]
