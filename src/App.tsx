@@ -141,6 +141,7 @@ const App = () => {
         return (
           <Summary
             shouldShow={modalState.shouldShow}
+            submittedWords={submittedWords}
             onHide={handleHideModal}
             gameStatistics={gameStatistics}
             shouldShowShareButton={shouldShowShareButton}

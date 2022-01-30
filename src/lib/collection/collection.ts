@@ -24,6 +24,21 @@ export const getWordsFrequency = async (
       .from('words')
       .select('id, word,frequency')
       .or(toFilter(submittedWords))
+      .order('frequency', { ascending: false })
+    return body as WordFrequency[]
+  } catch (error) {
+    console.error('Error fetching from Word collection')
+    return []
+  }
+}
+
+export const getThreeMostFrequentWords = async (): Promise<WordFrequency[]> => {
+  try {
+    const { body } = await supabase
+      .from('words')
+      .select('id, word,frequency')
+      .order('frequency', { ascending: false })
+      .limit(3)
     return body as WordFrequency[]
   } catch (error) {
     console.error('Error fetching from Word collection')
