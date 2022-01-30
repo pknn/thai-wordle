@@ -118,7 +118,13 @@ const App = () => {
   }
 
   const handleShare = () => {
-    navigator.clipboard.writeText(toSharableGameStatistics(submittedWords))
+    const content = toSharableGameStatistics(submittedWords)
+    if (!!navigator.share)
+      navigator.share({
+        title: 'ไทยเวิร์ดเดิ้ล',
+        text: content,
+      })
+    navigator.clipboard.writeText(content)
   }
 
   return (
