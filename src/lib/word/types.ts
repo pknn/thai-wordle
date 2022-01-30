@@ -4,3 +4,8 @@ export interface CharacterToken {
   character?: string
   guessState?: GuessState
 }
+
+export interface Solution {
+  word: string
+  solutionIndex: number
+}

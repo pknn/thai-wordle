@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@types/moment": "^2.13.0",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.10.1",

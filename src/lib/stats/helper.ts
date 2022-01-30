@@ -3,7 +3,7 @@ import {
   loadStatisticsFromLocalStorage,
   saveStatisticsToLocalStorage,
 } from '../storage'
-import { getGuessState } from '../word/guess'
+import { getGuessState, solution } from '../word/guess'
 import { GuessState } from '../word/types'
 import { ChartModel, GameStatistics, Histogram } from './types'
 
@@ -84,5 +84,9 @@ export const toSharableGameStatistics = (submittedWords: string[]): string => {
       .join(''),
   )
 
-  return [`ไทยเวิร์ดเดิล ${submittedWords.length}/6`, ...guessStates].join('\n')
+  return [
+    `ไทยเวิร์ดเดิล ${solution.solutionIndex} ${submittedWords.length}/6`,
+    ...guessStates,
+    'https://thai-wordle.luckyboi.dev/',
+  ].join('\n')
 }

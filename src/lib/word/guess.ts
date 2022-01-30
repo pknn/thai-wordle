@@ -4,11 +4,11 @@ import { getSolution } from './words'
 
 export const solution = getSolution()
 
-export const isSolution = (word: string) => word === solution
+export const isSolution = (word: string) => word === solution.word
 
 export const getGuessState = (word: string): CharacterToken[] => {
-  const solutionSplitted = thaiSplit(solution)
-  const solutionSplitStripped = thaiStripSplit(solution)
+  const solutionSplitted = thaiSplit(solution.word)
+  const solutionSplitStripped = thaiStripSplit(solution.word)
   const guessWordSplitted = thaiSplit(word)
   const guessWordSplitStripped = thaiStripSplit(word)
 
