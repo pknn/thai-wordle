@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { QuestionMarkCircleIcon, ChartBarIcon } from '@heroicons/react/solid'
 import Alert from './components/Alert'
 import Grid from './components/Grid'
@@ -21,7 +21,6 @@ import {
 import { GameStatus } from './lib/status'
 
 const App = () => {
-  const [lastIndex, setLastIndex] = useState(0)
   const [status, setStatus] = useState<GameStatus>('play')
   const [isLoadedSolution, setIsLoadedSolution] = useState(false)
   const [submittedWords, setSubmittedWords] = useState<string[]>([])
@@ -35,6 +34,8 @@ const App = () => {
   })
 
   const [isGodMode, setIsGodMode] = useState(false)
+
+  const shouldShowShareButton = useMemo(() => status !== 'play', [status])
 
   useEffect(() => {
     const maybeGameState = loadGameStateFromLocalStorage()
@@ -75,7 +76,6 @@ const App = () => {
         !isLoadedSolution,
       ),
     )
-    setLastIndex(submittedWords.length - 1)
     setModalState({
       modal: 'Summary',
       shouldShow: true,
@@ -133,6 +133,7 @@ const App = () => {
           shouldShow={modalState.shouldShow}
           onHide={handleHideModal}
           gameStatistics={gameStatistics}
+          shouldShowShareButton={shouldShowShareButton}
           onShare={handleShare}
         />
       )}

@@ -7,6 +7,7 @@ import StatisticWindow from './StatisticWindow'
 
 interface DataProps {
   gameStatistics: GameStatistics
+  shouldShowShareButton: boolean
 }
 
 interface ActionProps {
@@ -15,7 +16,13 @@ interface ActionProps {
 
 type Props = DataProps & ActionProps & ContainerProps
 
-const Summary = ({ shouldShow, onHide, gameStatistics, onShare }: Props) => {
+const Summary = ({
+  shouldShow,
+  onHide,
+  gameStatistics,
+  shouldShowShareButton,
+  onShare,
+}: Props) => {
   const [isCopied, setIsCopied] = useState(false)
   const handleOnShare = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsCopied(true)
@@ -56,15 +63,17 @@ const Summary = ({ shouldShow, onHide, gameStatistics, onShare }: Props) => {
         <div>
           <HistogramChart histogram={gameStatistics.histogram} />
         </div>
-        <div>
-          <button
-            className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
-            onClickCapture={handleOnShare}
-          >
-            Share <ShareIcon className="h-5 w-5 text-white inline-block" />
-          </button>
-          <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
-        </div>
+        {shouldShowShareButton && (
+          <div>
+            <button
+              className="p-4 bg-blue-500 hover:bg-blue-600 rounded text-white"
+              onClickCapture={handleOnShare}
+            >
+              Share <ShareIcon className="h-5 w-5 text-white inline-block" />
+            </button>
+            <div className={copiedStatusClassName}>คัดลอกแล้ว</div>
+          </div>
+        )}
       </div>
     </ModalContainer>
   )
