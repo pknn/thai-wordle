@@ -71,7 +71,6 @@ const App = () => {
 
   useEffect(() => {
     if (status === 'play') return
-    if (!isLoadedSolution) saveWordsFrequency(submittedWords)
     setGameStatistics(
       getFinishedGameStatistics(
         status,
@@ -148,6 +147,7 @@ const App = () => {
             onHide={handleHideModal}
             gameStatistics={gameStatistics}
             isGameFinished={shouldShowShareButton}
+            isLoadedSolution={isLoadedSolution}
             onShare={handleShare}
           />
         )

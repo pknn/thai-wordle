@@ -3,15 +3,21 @@ import { useState, useEffect } from 'react'
 import {
   getThreeMostFrequentWords,
   getWordsFrequency,
+  saveWordsFrequency,
 } from '../../../lib/collection/collection'
 import { WordFrequency } from '../../../lib/collection/types'
 
 interface DataProps {
   submittedWords: string[]
   isGameFinished: boolean
+  isLoadedSolution: boolean
 }
 
-const OnlineStatistics = ({ submittedWords, isGameFinished }: DataProps) => {
+const OnlineStatistics = ({
+  submittedWords,
+  isGameFinished,
+  isLoadedSolution,
+}: DataProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [threeMostFrequentWord, setThreeMostFrequentWord] = useState<
     WordFrequency[]
@@ -20,6 +26,7 @@ const OnlineStatistics = ({ submittedWords, isGameFinished }: DataProps) => {
 
   const fetchOnlineStatistics = async () => {
     setIsLoading(true)
+    if (!isLoadedSolution) await saveWordsFrequency(submittedWords)
     const threeMostFrequentWords = await getThreeMostFrequentWords()
     const mostGuessedWords = await getWordsFrequency(submittedWords)
     setThreeMostFrequentWord(threeMostFrequentWords)
@@ -31,6 +38,7 @@ const OnlineStatistics = ({ submittedWords, isGameFinished }: DataProps) => {
     if (!isGameFinished) return
     fetchOnlineStatistics()
   }, [isGameFinished])
+
   return !isLoading && threeMostFrequentWord.length > 0 && mostGuessedWord ? (
     <>
       <div>

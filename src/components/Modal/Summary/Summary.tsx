@@ -11,6 +11,7 @@ interface DataProps {
   gameStatistics: GameStatistics
   isGameFinished: boolean
   submittedWords: string[]
+  isLoadedSolution: boolean
 }
 
 interface ActionProps {
@@ -25,6 +26,7 @@ const Summary = ({
   gameStatistics,
   isGameFinished,
   submittedWords,
+  isLoadedSolution,
   onShare,
 }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -76,6 +78,7 @@ const Summary = ({
             <OnlineStatistics
               submittedWords={submittedWords}
               isGameFinished={isGameFinished}
+              isLoadedSolution={isLoadedSolution}
             />
             <div>
               <button
