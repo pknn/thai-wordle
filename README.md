@@ -1,5 +1,7 @@
 # Thai Wordle
 
+Inspired by Wordle, the viral word guessing game that has gone viral in 2021 but in Thai instead of English. I built the whole game from scratch using React TypeScript with the similar game mechanic as the original game, plus the feature that allows you to compare your guessed with other players.
+
 [ไปตำกัน](https://thai-wordle.luckyboi.dev/)
 
 แรงบันดาลใจ(ก๊อป)จาก [THWordle](https://github.com/narze/thwordle)
